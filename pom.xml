@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>GiveAway</name>
-    <description>GiveAway App</description>
+    <description>GiveAway Application</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
