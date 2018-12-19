@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import pl.coderslab.service.SpringDataUserDetailsService;
 
 import javax.sql.DataSource;
@@ -24,14 +25,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder();}
 
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception{
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/app/**").authenticated()
+                .antMatchers("/app/**").hasAnyRole("USER","ADMIN")
                 .anyRequest().permitAll()
-                 .and().formLogin().loginPage("/login").defaultSuccessUrl("/app/dashboard")
-                .and().formLogin().loginPage("/login").defaultSuccessUrl("/app/dashboard").failureUrl("/loginFailed")
+                .and().formLogin().loginPage("/login").defaultSuccessUrl("/loginSuccess").failureUrl("/loginFailed")
                 .and().logout()
                 .deleteCookies("remove").invalidateHttpSession(true)
                 .logoutUrl("/logout")

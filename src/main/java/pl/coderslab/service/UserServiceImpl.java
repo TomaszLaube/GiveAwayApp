@@ -2,11 +2,17 @@ package pl.coderslab.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.coderslab.addins.MailSender;
+import pl.coderslab.model.Role;
 import pl.coderslab.model.User;
 import pl.coderslab.repository.RoleRepository;
 import pl.coderslab.repository.UserRepository;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.transaction.Transactional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -25,17 +31,28 @@ public class UserServiceImpl implements UserService<User> {
 
     @Override
     public void save(User user) {
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        Set<Role> userRoles = user.getRoles();
+        userRoles.add(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+        try{
+            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
+        }catch(AddressException e){
+            e.printStackTrace();
+        }catch(MessagingException e){
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void update(User user) {
-
+        userRepository.save(user); // do aktywacji
     }
 
     @Override
     public User findById(Long id) {
-        return null;
+        return userRepository.findUserById(id);
     }
 
     @Override
@@ -46,5 +63,15 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     public User findByEmailEnabledValidated(String email, boolean enabled, boolean validated) {
         return userRepository.findUserByEmailAndEnabledAndValidated(email, true, true);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findByUUID(UUID uuid) {
+        return userRepository.findByUserUUID(uuid);
     }
 }

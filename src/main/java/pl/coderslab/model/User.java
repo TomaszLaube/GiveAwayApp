@@ -1,12 +1,17 @@
 package pl.coderslab.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -37,12 +42,17 @@ public class User {
 
     private boolean validated = false;
 
-    //UUID PLACEHOLDER !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    @NotNull
+    @Type(type="org.hibernate.type.UUIDCharType")
+    private UUID userUUID = UUID.randomUUID();
 
     @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
     Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
     Set<Offer> offers = new HashSet<>();
 
     public Long getId() {
@@ -107,6 +117,14 @@ public class User {
 
     public void setValidated(boolean validated) {
         this.validated = validated;
+    }
+
+    public UUID getUserUUID() {
+        return userUUID;
+    }
+
+    public void setUserUUID(UUID userUUID) {
+        this.userUUID = userUUID;
     }
 
     public Set<Role> getRoles() {
