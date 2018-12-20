@@ -40,7 +40,7 @@ public class User {
 
     private boolean enabled = true;
 
-    private boolean validated = false;
+    private boolean validated = true;
 
 
     @NotNull
@@ -54,6 +54,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     @LazyCollection(LazyCollectionOption.FALSE)
     Set<Offer> offers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    Set<Gathering> gatherings = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -141,5 +145,13 @@ public class User {
 
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
+    }
+
+    public Set<Gathering> getGatherings() {
+        return gatherings;
+    }
+
+    public void setGatherings(Set<Gathering> gatherings) {
+        this.gatherings = gatherings;
     }
 }

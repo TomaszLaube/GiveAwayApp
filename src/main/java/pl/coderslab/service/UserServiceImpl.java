@@ -36,18 +36,33 @@ public class UserServiceImpl implements UserService<User> {
         userRoles.add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        try{
+        /*try{
             MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
         }catch(AddressException e){
             e.printStackTrace();
         }catch(MessagingException e){
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void update(User user) {
         userRepository.save(user); // do aktywacji
+    }
+
+    @Override
+    public void edit(User user) { //do edycji danych
+        User temp = userRepository.findUserById(user.getId());
+        user.setRoles(temp.getRoles());
+        user.setGatherings(temp.getGatherings());
+        user.setOffers(temp.getOffers());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changePassword(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
 
     @Override

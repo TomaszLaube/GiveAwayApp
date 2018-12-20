@@ -16,6 +16,92 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `gatherings`
+--
+
+DROP TABLE IF EXISTS `gatherings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gatherings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `active` bit(1) NOT NULL,
+  `city` varchar(40) COLLATE utf8_polish_ci NOT NULL,
+  `created` datetime NOT NULL,
+  `date` date NOT NULL,
+  `description` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `postal_code` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `street` varchar(100) COLLATE utf8_polish_ci NOT NULL,
+  `telephone` varchar(9) COLLATE utf8_polish_ci NOT NULL,
+  `time` time NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKj35oiru9lvlm07i0l7h6m8rle` (`user_id`),
+  CONSTRAINT `FKj35oiru9lvlm07i0l7h6m8rle` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gatherings`
+--
+
+LOCK TABLES `gatherings` WRITE;
+/*!40000 ALTER TABLE `gatherings` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gatherings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gatherings_goods`
+--
+
+DROP TABLE IF EXISTS `gatherings_goods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gatherings_goods` (
+  `gathering_id` bigint(20) NOT NULL,
+  `goods_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`gathering_id`,`goods_id`),
+  KEY `FKrpe1d7whjc8hhsqqvst8xpkr` (`goods_id`),
+  CONSTRAINT `FKm51dj9a25ywdw1nnjs8x0x11a` FOREIGN KEY (`gathering_id`) REFERENCES `gatherings` (`id`),
+  CONSTRAINT `FKrpe1d7whjc8hhsqqvst8xpkr` FOREIGN KEY (`goods_id`) REFERENCES `goods` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gatherings_goods`
+--
+
+LOCK TABLES `gatherings_goods` WRITE;
+/*!40000 ALTER TABLE `gatherings_goods` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gatherings_goods` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `gatherings_receivers`
+--
+
+DROP TABLE IF EXISTS `gatherings_receivers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `gatherings_receivers` (
+  `gathering_id` bigint(20) NOT NULL,
+  `receivers_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`gathering_id`,`receivers_id`),
+  KEY `FKlnwsueachcdcky9sf833h2gl1` (`receivers_id`),
+  CONSTRAINT `FKgubtl8tp05pmhulh8e2mibayl` FOREIGN KEY (`gathering_id`) REFERENCES `gatherings` (`id`),
+  CONSTRAINT `FKlnwsueachcdcky9sf833h2gl1` FOREIGN KEY (`receivers_id`) REFERENCES `receivers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `gatherings_receivers`
+--
+
+LOCK TABLES `gatherings_receivers` WRITE;
+/*!40000 ALTER TABLE `gatherings_receivers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gatherings_receivers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `goods`
 --
 
@@ -26,7 +112,7 @@ CREATE TABLE `goods` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,6 +121,7 @@ CREATE TABLE `goods` (
 
 LOCK TABLES `goods` WRITE;
 /*!40000 ALTER TABLE `goods` DISABLE KEYS */;
+INSERT INTO `goods` VALUES (1,'reusable clothes'),(2,'damaged clothes'),(3,'toys'),(4,'books'),(5,'other');
 /*!40000 ALTER TABLE `goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,7 +276,7 @@ CREATE TABLE `receivers` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,6 +285,7 @@ CREATE TABLE `receivers` (
 
 LOCK TABLES `receivers` WRITE;
 /*!40000 ALTER TABLE `receivers` DISABLE KEYS */;
+INSERT INTO `receivers` VALUES (1,'kids'),(2,'mothers'),(3,'homeless'),(4,'disabled'),(5,'elders');
 /*!40000 ALTER TABLE `receivers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -242,7 +330,7 @@ CREATE TABLE `users` (
   `useruuid` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `validated` bit(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -251,7 +339,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (2,'admin@admin.pl',_binary '','Admin','Admin','$2a$10$Al9ViIvUhi2NDlXP3RgolOOpDNnmGQfLtSaPv/rr2HXt232BmWFVG','231e305e-580f-4447-8477-c8b48339d7f0',_binary '');
+INSERT INTO `users` VALUES (1,'admin@admin.pl',_binary '','Admin','Admin','$2a$10$tI9r/Ix1C5eeMA7eJJu6r.rZeho5CM2wYxAXpY9R3ZAulhbYTDpA6','8cf152d5-a1ae-455e-8e85-929f7e96880b',_binary '');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -278,7 +366,7 @@ CREATE TABLE `users_roles` (
 
 LOCK TABLES `users_roles` WRITE;
 /*!40000 ALTER TABLE `users_roles` DISABLE KEYS */;
-INSERT INTO `users_roles` VALUES (2,1),(2,2);
+INSERT INTO `users_roles` VALUES (1,1);
 /*!40000 ALTER TABLE `users_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -291,4 +379,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-19 12:38:58
+-- Dump completed on 2018-12-20 11:58:08

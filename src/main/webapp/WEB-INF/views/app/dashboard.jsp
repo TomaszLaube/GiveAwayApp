@@ -5,18 +5,28 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Document</title>
-    <link rel="stylesheet" href="/resources/css/style.css" />
+    <link rel="stylesheet" href="/resources/css/style.css"/>
 </head>
 <body>
 <header>
     <nav class="container container--70">
         <ul class="nav--actions">
-            <li><a href="/login">Zaloguj</a></li>
-            <li class="highlighted"><a href="/register">Załóż konto</a></li>
+            <li class="highlighted">
+                <form action="/login" method="get" id="loginForm">
+                    <input type="submit" value="Zaloguj" class="btn btn--small">
+                </form>
+            </li>
+            <li class="highlighted">
+                <form action="/logout" method="post" id="logoutForm">
+                    <input type="hidden" name="${_csrf.parameterName}"
+                           value="${_csrf.token}"/>
+                    <input type="submit" value="Wyloguj" class="btn btn--small">
+                </form>
+            </li>
         </ul>
 
         <ul>
@@ -25,6 +35,13 @@
             <li><a href="#">O nas</a></li>
             <li><a href="#">Fundacje i organizacje</a></li>
             <li><a href="#">Kontakt</a></li>
+        </ul>
+        <ul class="slogan--buttons">
+            <li><a href="/app/createGiveAway" class="btn btn--highlighted">Oddaj rzeczy</a></li>
+            <li><a href="#" class="btn btn--highlighted">Zorganizuj zbiórkę</a></li>
+            <li><a href="/app/editUser" class="btn">Edytuj profil</a></li>
+            <li><a href="#" class="btn">Przekazane datki</a></li>
+            <li><a href="#" class="btn">Organizowane zbiórki</a></li>
         </ul>
     </nav>
 </header>
@@ -55,16 +72,17 @@
     </div>
 </section>
 
+
 <footer>
     <div class="contact">
         <h2>Skontaktuj się z nami</h2>
         <h3>Formularz kontaktowy</h3>
         <form>
             <div class="form-group form-group--50">
-                <input type="text" name="name" placeholder="Imię" />
+                <input type="text" name="name" placeholder="Imię"/>
             </div>
             <div class="form-group form-group--50">
-                <input type="text" name="surname" placeholder="Nazwisko" />
+                <input type="text" name="surname" placeholder="Nazwisko"/>
             </div>
 
             <div class="form-group">
