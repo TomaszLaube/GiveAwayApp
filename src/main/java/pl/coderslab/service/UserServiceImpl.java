@@ -30,11 +30,46 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public void save(User user) {
+    public void saveUser(User user) {
         Role userRole = roleRepository.findByName("ROLE_USER");
         Set<Role> userRoles = user.getRoles();
         userRoles.add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setName("N/A");
+        user.setDescription("N/A");
+        user.setOrg(false);
+        userRepository.save(user);
+        /*try{
+            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
+        }catch(AddressException e){
+            e.printStackTrace();
+        }catch(MessagingException e){
+            e.printStackTrace();
+        }*/
+    }
+
+    @Override
+    public void saveAdmin(User user) {
+        Role userRole = roleRepository.findByName("ROLE_ADMIN");
+        Set<Role> userRoles = user.getRoles();
+        userRoles.add(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setName("N/A");
+        user.setDescription("N/A");
+        user.setOrg(false);
+        user.setValidated(true);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void saveOrg(User user) {
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        Set<Role> userRoles = user.getRoles();
+        userRoles.add(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName("N/A");
+        user.setLastName("N/A");
+        user.setOrg(true);
         userRepository.save(user);
         /*try{
             MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
@@ -58,6 +93,7 @@ public class UserServiceImpl implements UserService<User> {
         user.setOffers(temp.getOffers());
         userRepository.save(user);
     }
+
 
     @Override
     public void changePassword(User user) {
@@ -85,8 +121,5 @@ public class UserServiceImpl implements UserService<User> {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public User findByUUID(UUID uuid) {
-        return userRepository.findByUserUUID(uuid);
-    }
+
 }

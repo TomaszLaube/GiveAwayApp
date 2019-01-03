@@ -30,7 +30,7 @@
 </header>
 
 <section class="login-page">
-    <h2>Załóż konto prywatne</h2>
+    <h2>Załóż konto organizacji</h2>
     <form:form method="post" modelAttribute="user">
 
         <div class="form-group">

@@ -7,13 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.model.CurrentUser;
-import pl.coderslab.model.Gathering;
-import pl.coderslab.model.Offer;
-import pl.coderslab.model.User;
+import pl.coderslab.model.*;
+import pl.coderslab.service.GoodsService;
+import pl.coderslab.service.ReceiverService;
 import pl.coderslab.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 @Controller
@@ -22,6 +22,12 @@ public class AppController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    GoodsService goodsService;
+
+    @Autowired
+    ReceiverService receiverService;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -57,14 +63,28 @@ public class AppController {
     public String giveAwayForm(@AuthenticationPrincipal CurrentUser customUser, Model model){
         User loggedUser = customUser.getUser();
         User user = (User)userService.findById(loggedUser.getId());
+        List<Goods> goods = goodsService.findAll();
+        List<Receiver> receivers = receiverService.findAll();
 
+        model.addAttribute("goods",goods);
         model.addAttribute("user",user);
+        model.addAttribute("receivers",receivers);
         model.addAttribute("offer",new Offer());
-        return "app/giveAwayForm";
+        //return "app/giveAwayForm";
+        return "app/testForm";
     }
 
     //PostMapping Placeholder
 
+    @PostMapping("/createGiveAway")
+    public String giveAwayAdded(@ModelAttribute @Valid Offer offer, BindingResult result, Model model){
+        if(result.hasErrors()){
+            return "redirect:/app/createGiveAway";
+        }
+        else{
+            return "app/dashboard";
+        }
+    }
 
     @GetMapping("/editUser")
     public String editUser(@AuthenticationPrincipal CurrentUser customUser, Model model){

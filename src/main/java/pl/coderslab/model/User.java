@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -38,14 +37,24 @@ public class User {
     @Transient
     private String checkPassword;
 
+    @NotBlank
+    @Size(max = 50)
+    private String name;
+
+    @NotBlank
+    private String description;
+
+    @ManyToOne
+    Location location;
+
     private boolean enabled = true;
 
-    private boolean validated = true;
+    private boolean validated = false;
 
+    private boolean org;
 
-    @NotNull
-    @Type(type="org.hibernate.type.UUIDCharType")
-    private UUID userUUID = UUID.randomUUID();
+    @OneToOne
+    private pl.coderslab.model.UUID uuid;
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -107,6 +116,30 @@ public class User {
         this.checkPassword = checkPassword;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
@@ -123,12 +156,20 @@ public class User {
         this.validated = validated;
     }
 
-    public UUID getUserUUID() {
-        return userUUID;
+    public boolean isOrg() {
+        return org;
     }
 
-    public void setUserUUID(UUID userUUID) {
-        this.userUUID = userUUID;
+    public void setOrg(boolean org) {
+        this.org = org;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Set<Role> getRoles() {
