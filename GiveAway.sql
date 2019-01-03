@@ -126,33 +126,6 @@ INSERT INTO `goods` VALUES (1,'Ubrania ponownego u≈ºytku'),(2,'Ubrania do przer√
 UNLOCK TABLES;
 
 --
--- Table structure for table `institutions`
---
-
-DROP TABLE IF EXISTS `institutions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `institutions` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `description` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `name` varchar(50) COLLATE utf8_polish_ci NOT NULL,
-  `location_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKhb5jjadakkcss55lag0loy9ho` (`location_id`),
-  CONSTRAINT `FKhb5jjadakkcss55lag0loy9ho` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `institutions`
---
-
-LOCK TABLES `institutions` WRITE;
-/*!40000 ALTER TABLE `institutions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `institutions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `locations`
 --
 
@@ -198,10 +171,10 @@ CREATE TABLE `offers` (
   `institution_id` bigint(20) DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `FKgc4vhuooe1nxj7aksdydgo03o` (`institution_id`),
+  KEY `FK584f4isbcq5fjbo9s1950mvsb` (`institution_id`),
   KEY `FK9yilcimbeupq2lyrqr1nlrjyb` (`user_id`),
-  CONSTRAINT `FK9yilcimbeupq2lyrqr1nlrjyb` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `FKgc4vhuooe1nxj7aksdydgo03o` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`)
+  CONSTRAINT `FK584f4isbcq5fjbo9s1950mvsb` FOREIGN KEY (`institution_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FK9yilcimbeupq2lyrqr1nlrjyb` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -348,8 +321,60 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'N/A','admin@admin.pl',_binary '','Admin','Admin','N/A',_binary '\0','$2a$10$tOzGmdYHQ8PmjFnMPCBIeOR/9SakhghOxZVepuviq1lILoxuAGvqy',_binary '',NULL,NULL);
+INSERT INTO `users` VALUES (1,'N/A','admin@admin.pl',_binary '','Admin','Admin','N/A',_binary '\0','$2a$10$9h9LVV.7InxnzxuchaEy4eIUc8q.VPwgMKlIQnh0dCx3ywMRwLSIK',_binary '',NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_org_goods`
+--
+
+DROP TABLE IF EXISTS `users_org_goods`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_org_goods` (
+  `user_id` bigint(20) NOT NULL,
+  `org_goods_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`org_goods_id`),
+  KEY `FKr02brq6rai7s60qyor3o46y25` (`org_goods_id`),
+  CONSTRAINT `FKn48vpg3j17qneir4fdvjjq78n` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FKr02brq6rai7s60qyor3o46y25` FOREIGN KEY (`org_goods_id`) REFERENCES `goods` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_org_goods`
+--
+
+LOCK TABLES `users_org_goods` WRITE;
+/*!40000 ALTER TABLE `users_org_goods` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_org_goods` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `users_org_receivers`
+--
+
+DROP TABLE IF EXISTS `users_org_receivers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users_org_receivers` (
+  `user_id` bigint(20) NOT NULL,
+  `org_receivers_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`org_receivers_id`),
+  KEY `FKkjdtk63krkmu9x8jb27kxqpus` (`org_receivers_id`),
+  CONSTRAINT `FK52bg3uddnf70h1jrec0wsyoau` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `FKkjdtk63krkmu9x8jb27kxqpus` FOREIGN KEY (`org_receivers_id`) REFERENCES `receivers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_org_receivers`
+--
+
+LOCK TABLES `users_org_receivers` WRITE;
+/*!40000 ALTER TABLE `users_org_receivers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_org_receivers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -414,4 +439,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-03 15:15:24
+-- Dump completed on 2019-01-03 17:04:02

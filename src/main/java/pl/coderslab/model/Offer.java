@@ -65,7 +65,7 @@ public class Offer {
     Set<Receiver> receivers = new HashSet<>();
 
     @ManyToOne
-    Institution institution;
+    User institution;
 
     @ManyToOne
     User user;
@@ -175,11 +175,11 @@ public class Offer {
         this.receivers = receivers;
     }
 
-    public Institution getInstitution() {
+    public User getInstitution() {
         return institution;
     }
 
-    public void setInstitution(Institution institution) {
+    public void setInstitution(User institution) {
         this.institution = institution;
     }
 
