@@ -68,6 +68,8 @@
             <button class="btn" type="submit">Załóż konto</button>
             <a href="/registerOrganisation" class="btn btn--highlighted">Zarejestruj organizację</a>
         </div>
+        <form:hidden path="name" value="N/A"/>
+        <form:hidden path="description" value="N/A"/>
     </form:form>
 </section>
 

@@ -6,13 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import pl.coderslab.model.CurrentUser;
-import pl.coderslab.model.Role;
-import pl.coderslab.model.User;
-import pl.coderslab.service.RoleService;
-import pl.coderslab.service.UserService;
+import pl.coderslab.model.*;
+import pl.coderslab.service.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,6 +23,15 @@ public class HomeController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    LocationService locationService;
+
+    @Autowired
+    ReceiverService receiverService;
+
+    @Autowired
+    GoodsService goodsService;
 
     @RequestMapping("/")
     public String home(){
@@ -58,6 +65,12 @@ public class HomeController {
 
     @GetMapping("/registerOrganisation")
     public String registerOrganisation(Model model){
+        List<Location> locations = locationService.findAll();
+        List<Receiver> receivers = receiverService.findAll();
+        List<Goods> goods = goodsService.findAll();
+        model.addAttribute("receivers", receivers);
+        model.addAttribute("goods",goods);
+        model.addAttribute("locations",locations);
         model.addAttribute("user", new User());
         return "home/registrationOrg";
     }

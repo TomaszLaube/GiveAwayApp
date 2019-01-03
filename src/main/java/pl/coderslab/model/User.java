@@ -68,6 +68,14 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     Set<Gathering> gatherings = new HashSet<>();
 
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    Set<Goods> orgGoods = new HashSet<>();
+
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    Set<Receiver> orgReceivers = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -194,5 +202,21 @@ public class User {
 
     public void setGatherings(Set<Gathering> gatherings) {
         this.gatherings = gatherings;
+    }
+
+    public Set<Goods> getOrgGoods() {
+        return orgGoods;
+    }
+
+    public void setOrgGoods(Set<Goods> orgGoods) {
+        this.orgGoods = orgGoods;
+    }
+
+    public Set<Receiver> getOrgReceivers() {
+        return orgReceivers;
+    }
+
+    public void setOrgReceivers(Set<Receiver> orgReceivers) {
+        this.orgReceivers = orgReceivers;
     }
 }
