@@ -1,5 +1,8 @@
 package pl.coderslab.service;
 
+import pl.coderslab.model.Location;
+
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService<U> {
@@ -13,4 +16,5 @@ public interface UserService<U> {
     void delete(U u);
     U findByEmailEnabledValidated(String email, boolean enabled, boolean validated);
     U findByEmail(String email);
+    List<U> findOrgByLocation(Location location, boolean org);
 }

@@ -112,10 +112,12 @@ public class HomeController {
     public String loginRedirect(@AuthenticationPrincipal CurrentUser customUser){
         boolean isAdmin = false;
         boolean isUser = false;
+        boolean isOrg = false;
         User currentUser = customUser.getUser();
         Set<Role> userRoles = currentUser.getRoles();
         Role adminRole = (Role)roleService.findByRole("ROLE_ADMIN");
         Role userRole = (Role)roleService.findByRole("ROLE_USER");
+        Role orgRole = (Role)roleService.findByRole("ROLE_ORG");
         for(Role r: userRoles){
             if(r.getName().equals(adminRole.getName())){
                 isAdmin = true;
@@ -123,12 +125,17 @@ public class HomeController {
             }else if(r.getName().equals(userRole.getName())){
                 isUser = true;
                 break;
+            }else if(r.getName().equals((userRole.getName()))){
+                isOrg = true;
+                break;
             }
         }
         if(isAdmin){
             return "redirect:/admin/dashboard";
         } else if(isUser){
             return "redirect:/app/dashboard";
+        } else if(isOrg){
+            return "redirect:/org/dashboard";
         } else {
             return "redirect:/403";
         }

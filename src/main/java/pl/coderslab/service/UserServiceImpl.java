@@ -3,6 +3,7 @@ package pl.coderslab.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.addins.MailSender;
+import pl.coderslab.model.Location;
 import pl.coderslab.model.Role;
 import pl.coderslab.model.User;
 import pl.coderslab.repository.RoleRepository;
@@ -11,6 +12,7 @@ import pl.coderslab.repository.UserRepository;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -63,7 +65,7 @@ public class UserServiceImpl implements UserService<User> {
 
     @Override
     public void saveOrg(User user) {
-        Role userRole = roleRepository.findByName("ROLE_USER");
+        Role userRole = roleRepository.findByName("ROLE_ORG");
         Set<Role> userRoles = user.getRoles();
         userRoles.add(userRole);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -119,6 +121,11 @@ public class UserServiceImpl implements UserService<User> {
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<User> findOrgByLocation(Location location, boolean org) {
+        return userRepository.findByLocationAndOrg(location,org);
     }
 
 

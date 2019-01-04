@@ -8,11 +8,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.model.*;
+import pl.coderslab.service.GatheringService;
 import pl.coderslab.service.GoodsService;
 import pl.coderslab.service.ReceiverService;
 import pl.coderslab.service.UserService;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,6 +34,9 @@ public class AppController {
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    GatheringService gatheringService;
 
     @RequestMapping("/dashboard")
     public String userDashboard(@AuthenticationPrincipal CurrentUser customUser, Model model){
@@ -65,21 +71,26 @@ public class AppController {
         User user = (User)userService.findById(loggedUser.getId());
         List<Goods> goods = goodsService.findAll();
         List<Receiver> receivers = receiverService.findAll();
-
         model.addAttribute("goods",goods);
         model.addAttribute("user",user);
         model.addAttribute("receivers",receivers);
         model.addAttribute("offer",new Offer());
-        //return "app/giveAwayForm";
-        return "app/testForm";
+        return "app/giveAwayForm";
     }
 
-    //PostMapping Placeholder
 
     @PostMapping("/createGiveAway")
-    public String giveAwayAdded(@ModelAttribute @Valid Offer offer, BindingResult result, Model model){
+    public String giveAwayAdded(@ModelAttribute @Valid Offer offer, BindingResult result, Model model, @AuthenticationPrincipal CurrentUser customUser){
         if(result.hasErrors()){
-            return "redirect:/app/createGiveAway";
+            User loggedUser = customUser.getUser();
+            User user = (User)userService.findById(loggedUser.getId());
+            List<Goods> goods = goodsService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            model.addAttribute("goods",goods);
+            model.addAttribute("user",user);
+            model.addAttribute("receivers",receivers);
+            model.addAttribute("offer", offer);
+            return "app/giveAwayForm";
         }
         else{
             return "app/dashboard";
@@ -127,6 +138,35 @@ public class AppController {
             userService.changePassword(user);
             return "redirect:/app/dashboard";
         }
+    }
+
+    @GetMapping("/addGathering")
+    public String addGathering(Model model){
+        List<Receiver> receivers = receiverService.findAll();
+        List<Goods> goods = goodsService.findAll();
+        Gathering gathering = new Gathering();
+
+
+        model.addAttribute("receivers", receivers);
+        model.addAttribute("goods", goods);
+        model.addAttribute("gathering", new Gathering());
+        return "app/gatheringForm";
+
+    }
+
+    @PostMapping("/addGathering")
+    public String addedGathering(@ModelAttribute @Valid Gathering gathering, BindingResult result, Model model, @AuthenticationPrincipal CurrentUser customUser){
+        if(result.hasErrors()){
+            model.addAttribute("gathering", gathering);
+            return "app/gatheringForm";
+        }
+        User loggedUser = customUser.getUser();
+        User user = (User) userService.findById(loggedUser.getId());
+        Date date = new Date();
+        gathering.setCreated(new Timestamp(date.getTime()));
+        gathering.setUser(user);
+        gatheringService.save(gathering);
+        return "redirect:/app/dashboard";
     }
 
 }

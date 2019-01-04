@@ -53,8 +53,11 @@ public class AddinsController {
             admin.setName("ROLE_ADMIN");
             Role user = new Role();
             user.setName("ROLE_USER");
+            Role org = new Role();
+            org.setName("ROLE_ORG");
             roleService.save(admin);
             roleService.save(user);
+            roleService.save(org);
         }
         if(goodsCheck.size()==0){
             Goods goodClothes = new Goods();

@@ -1,6 +1,7 @@
 package pl.coderslab.model;
 
 import org.hibernate.validator.constraints.NotBlank;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.Size;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,7 +48,6 @@ public class Gathering {
     @NotBlank
     private String description;
 
-    @NotNull
     private Timestamp created;
 
     @ManyToOne
