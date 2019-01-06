@@ -128,5 +128,10 @@ public class UserServiceImpl implements UserService<User> {
         return userRepository.findByLocationAndOrg(location,org);
     }
 
+    @Override
+    public List<User> findOrg(boolean org) {
+        return userRepository.findByOrg(org);
+    }
+
 
 }

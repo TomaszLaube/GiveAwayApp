@@ -6,6 +6,8 @@ import pl.coderslab.model.Gathering;
 import pl.coderslab.repository.GatheringRepository;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -17,6 +19,8 @@ public class GatheringServiceImpl implements GatheringService<Gathering> {
 
     @Override
     public void save(Gathering gathering) {
+        Date date = new Date();
+        gathering.setCreated(new Timestamp(date.getTime()));
         gatheringRepository.save(gathering);
     }
 

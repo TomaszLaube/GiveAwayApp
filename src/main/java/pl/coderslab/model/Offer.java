@@ -8,7 +8,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,13 +43,11 @@ public class Offer {
     @NotNull
     private Date date;
 
-    @NotNull
-    private Time time;
 
     @NotBlank
     private String additionalInstructions;
 
-    @NotNull
+
     private Timestamp created;
 
     private boolean sent = false;
@@ -64,9 +61,11 @@ public class Offer {
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Receiver> receivers = new HashSet<>();
 
+    @NotNull
     @ManyToOne
     User institution;
 
+    @NotNull
     @ManyToOne
     User user;
 
@@ -127,13 +126,6 @@ public class Offer {
         this.date = date;
     }
 
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
-    }
 
     public String getAdditionalInstructions() {
         return additionalInstructions;

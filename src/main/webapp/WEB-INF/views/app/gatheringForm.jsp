@@ -96,10 +96,6 @@
             <form:errors path="date" element="div"/>
         </div>
 
-        <div class="form-group">
-            <form:input type="time"  path="time" placeholder="Godzina" required="true"/>
-            <form:errors path="time" element="div"/>
-        </div>
 
         <div class="form-group form-group--buttons">
             <button class="btn" type="submit">Dodaj zbiórkę</button>

@@ -71,66 +71,30 @@
 
 
 
+
+
     <section>
         <div>
-            <form:form method="post" modelAttribute="offer">
-                <div>
-                    <h3>Zaznacz co chcesz oddać:</h3>
-
-                    <c:forEach var="good" items="${goods}">
-                        <div >
-                            <label>
-                                <form:checkbox path="goods"
-                                               value="${good.id}"/>
-                                    ${good.name}
-                            </label>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-                <h3>Adresaci:</h3>
-                <c:forEach var="receiver" items="${receivers}">
+            <form method="post" action="/app/createGiveAwaySecond">
+                <c:forEach var="org" items="${filteredOrgs}">
                     <div >
                         <label>
-                            <form:checkbox path="receivers"
-                                           value="${receiver.id}"/>
-                                ${receiver.name}
+                            <input type="radio" value="${org.id}" name="orgId">
+                            <h4>${org.name}</h4>
+                                ${org.description}
                         </label>
                     </div>
+
                 </c:forEach>
-
-                <div >
-                    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
-
-                    <div >
-                        <label>
-                            Liczba 60l worków:
-                            <form:input path="bagNum" type="number" step="1" min="1" required="true" />
-                            <form:errors path="bagNum"/>
-                        </label>
-                    </div>
-
-                </div>
-
-
-                <h3>Lokalizacja:</h3>
-                <div>
-                    <select name="locationId">
-                        <c:forEach var="city" items="${locations}">
-                            <option value="${city.id}">${city.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn">Dalej</button>
-            </form:form>
+                <input type="hidden" name="${_csrf.parameterName}"
+                       value="${_csrf.token}" />
+                <input type="submit" class="btn">Dalej</input>
+            </form>
 
 
 
         </div>
     </section>
-
 
 
 

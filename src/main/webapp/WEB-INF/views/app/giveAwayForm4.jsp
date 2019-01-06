@@ -71,66 +71,56 @@
 
 
 
-    <section>
+
+
+<section>
+    <div>
+       <h2>Podsumowanie:</h2>
         <div>
-            <form:form method="post" modelAttribute="offer">
-                <div>
-                    <h3>Zaznacz co chcesz oddać:</h3>
-
-                    <c:forEach var="good" items="${goods}">
-                        <div >
-                            <label>
-                                <form:checkbox path="goods"
-                                               value="${good.id}"/>
-                                    ${good.name}
-                            </label>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-                <h3>Adresaci:</h3>
-                <c:forEach var="receiver" items="${receivers}">
-                    <div >
-                        <label>
-                            <form:checkbox path="receivers"
-                                           value="${receiver.id}"/>
-                                ${receiver.name}
-                        </label>
-                    </div>
+        <h3>Oddawane rzeczy</h3>
+            <ul>
+                <c:forEach var="good" items="${newOffer.goods}">
+                    <li>${good.name}</li>
                 </c:forEach>
-
-                <div >
-                    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
-
-                    <div >
-                        <label>
-                            Liczba 60l worków:
-                            <form:input path="bagNum" type="number" step="1" min="1" required="true" />
-                            <form:errors path="bagNum"/>
-                        </label>
-                    </div>
-
-                </div>
-
-
-                <h3>Lokalizacja:</h3>
-                <div>
-                    <select name="locationId">
-                        <c:forEach var="city" items="${locations}">
-                            <option value="${city.id}">${city.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn">Dalej</button>
-            </form:form>
-
-
-
+            </ul>
         </div>
-    </section>
+        <div>
+            <h3>Komu chcesz oddać rzeczy</h3>
+            <ul>
+                <c:forEach var="receiver" items="${newOffer.receivers}">
+                    <li>${receiver.name}</li>
+                </c:forEach>
+            </ul>
+        </div>
+        <div>
+            <h3>Wybrana organizacja</h3>
+            <h4>${newOffer.institution.name}</h4>
+            ${newOffer.institution.description}
+        </div>
+        <div>
+            <h3>Ilość 60l worków:</h3>
+            ${newOffer.bagNum}
+        </div>
+        <div>
+            <h3>Dane dla kuriera:</h3>
+            <ul>
+                <li>Miasto: ${newOffer.city}</li>
+                <li>Kod pocztowy: ${newOffer.postalCode}</li>
+                <li>Adres: ${newOffer.street}</li>
+                <li>Numer telefonu: ${newOffer.telephone}</li>
+                <li>Data wysyłki: ${newOffer.date}</li>
+                <li>Instrukcje dla kuriera: ${newOffer.additionalInstructions}</li>
+            </ul>
+        </div>
+        <a href="/app/createGiveAway" class="btn">Powtorz</a>
+        <form method="post" action="/app/addGiveAway">
+            <input type="hidden" name="${_csrf.parameterName}"
+                   value="${_csrf.token}" />
+            <input type="submit" class="btn" value="Potwierdzam">
+        </form>
 
+    </div>
+</section>
 
 
 

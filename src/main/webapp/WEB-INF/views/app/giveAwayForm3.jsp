@@ -71,66 +71,72 @@
 
 
 
-    <section>
-        <div>
-            <form:form method="post" modelAttribute="offer">
-                <div>
-                    <h3>Zaznacz co chcesz oddać:</h3>
 
-                    <c:forEach var="good" items="${goods}">
-                        <div >
-                            <label>
-                                <form:checkbox path="goods"
-                                               value="${good.id}"/>
-                                    ${good.name}
-                            </label>
-                        </div>
-                    </c:forEach>
 
-                </div>
+<section>
+    <div>
+        <form:form method="post" action="/app/createGiveAwayThird" modelAttribute="newOffer">
 
-                <h3>Adresaci:</h3>
-                <c:forEach var="receiver" items="${receivers}">
-                    <div >
-                        <label>
-                            <form:checkbox path="receivers"
-                                           value="${receiver.id}"/>
-                                ${receiver.name}
-                        </label>
-                    </div>
-                </c:forEach>
+            <div>
+                <h3>Podaj dane do wysyłki:</h3>
 
                 <div >
-                    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
-
-                    <div >
-                        <label>
-                            Liczba 60l worków:
-                            <form:input path="bagNum" type="number" step="1" min="1" required="true" />
-                            <form:errors path="bagNum"/>
-                        </label>
-                    </div>
-
+                    <label>
+                        Miasto:
+                        <form:input path="city" placeholder="Miasto" required="true" />
+                        <form:errors path="city"/>
+                    </label>
                 </div>
 
-
-                <h3>Lokalizacja:</h3>
-                <div>
-                    <select name="locationId">
-                        <c:forEach var="city" items="${locations}">
-                            <option value="${city.id}">${city.name}</option>
-                        </c:forEach>
-                    </select>
+                <div >
+                    <label>
+                        Adres:
+                        <form:input path="street" placeholder="Adres" required="true" />
+                        <form:errors path="street"/>
+                    </label>
                 </div>
 
-                <button type="submit" class="btn">Dalej</button>
-            </form:form>
+                <div >
+                    <label>
+                        Kod pocztowy:
+                        <form:input path="postalCode" placeholder="Kod pocztowy" required="true" />
+                        <form:errors path="postalCode"/>
+                    </label>
+                </div>
+                <div >
+                    <label>
+                        Numer telefonu:
+                        <form:input path="telephone" placeholder="Numer telefonu" required="true" />
+                        <form:errors path="telephone"/>
+                    </label>
+                </div>
+                <div >
+                    <label>
+                        Data odbioru:
+                        <form:input path="date" type="date" placeholder="Data" required="true" />
+                        <form:errors path="date"/>
+                    </label>
+                </div>
+
+                <div >
+                    <label>
+                        Instrukcje dla kuriera:
+                        <form:textarea path="additionalInstructions" placeholder="Instrukcje dla kuriera" required="true" />
+                        <form:errors path="additionalInstructions"/>
+                    </label>
+                </div>
+
+            </div>
+            <form:hidden path="institution" value="${newOffer.institution.id}"/>
+            <form:hidden path="user" value="${newOffer.user.id}"/>
+            <form:hidden path="bagNum" value="${newOffer.bagNum}"/>
+            <button type="submit" class="btn">Dalej</button>
+        </form:form>
 
 
 
-        </div>
-    </section>
-
+    </div>
+</section>
 
 
 

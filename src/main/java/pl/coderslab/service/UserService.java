@@ -17,4 +17,5 @@ public interface UserService<U> {
     U findByEmailEnabledValidated(String email, boolean enabled, boolean validated);
     U findByEmail(String email);
     List<U> findOrgByLocation(Location location, boolean org);
+    List<U> findOrg(boolean org);
 }

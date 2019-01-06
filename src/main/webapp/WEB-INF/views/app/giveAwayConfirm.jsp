@@ -71,65 +71,14 @@
 
 
 
-    <section>
-        <div>
-            <form:form method="post" modelAttribute="offer">
-                <div>
-                    <h3>Zaznacz co chcesz oddać:</h3>
-
-                    <c:forEach var="good" items="${goods}">
-                        <div >
-                            <label>
-                                <form:checkbox path="goods"
-                                               value="${good.id}"/>
-                                    ${good.name}
-                            </label>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-                <h3>Adresaci:</h3>
-                <c:forEach var="receiver" items="${receivers}">
-                    <div >
-                        <label>
-                            <form:checkbox path="receivers"
-                                           value="${receiver.id}"/>
-                                ${receiver.name}
-                        </label>
-                    </div>
-                </c:forEach>
-
-                <div >
-                    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
-
-                    <div >
-                        <label>
-                            Liczba 60l worków:
-                            <form:input path="bagNum" type="number" step="1" min="1" required="true" />
-                            <form:errors path="bagNum"/>
-                        </label>
-                    </div>
-
-                </div>
-
-
-                <h3>Lokalizacja:</h3>
-                <div>
-                    <select name="locationId">
-                        <c:forEach var="city" items="${locations}">
-                            <option value="${city.id}">${city.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn">Dalej</button>
-            </form:form>
+<section>
+    <div>
+        <h2>Sukces</h2>
 
 
 
-        </div>
-    </section>
+    </div>
+</section>
 
 
 

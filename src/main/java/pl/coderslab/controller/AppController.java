@@ -8,19 +8,20 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.coderslab.model.*;
-import pl.coderslab.service.GatheringService;
-import pl.coderslab.service.GoodsService;
-import pl.coderslab.service.ReceiverService;
-import pl.coderslab.service.UserService;
+import pl.coderslab.service.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/app")
+@SessionAttributes({"newOffer"})
 public class AppController {
 
     @Autowired
@@ -37,6 +38,12 @@ public class AppController {
 
     @Autowired
     GatheringService gatheringService;
+
+    @Autowired
+    LocationService locationService;
+
+    @Autowired
+    OfferService offerService;
 
     @RequestMapping("/dashboard")
     public String userDashboard(@AuthenticationPrincipal CurrentUser customUser, Model model){
@@ -71,6 +78,20 @@ public class AppController {
         User user = (User)userService.findById(loggedUser.getId());
         List<Goods> goods = goodsService.findAll();
         List<Receiver> receivers = receiverService.findAll();
+
+        List<User> orgs = userService.findOrg(true);
+        List<Location> activeCities = new ArrayList<>();
+        for(User u: orgs){
+            activeCities.add(u.getLocation());
+        }
+        if(activeCities.size()>0){
+            activeCities =  activeCities.stream()
+                    .distinct()// sortowanie po nazwie miast!
+                    .collect(Collectors.toList());
+
+        }
+
+        model.addAttribute("locations", activeCities);
         model.addAttribute("goods",goods);
         model.addAttribute("user",user);
         model.addAttribute("receivers",receivers);
@@ -80,22 +101,60 @@ public class AppController {
 
 
     @PostMapping("/createGiveAway")
-    public String giveAwayAdded(@ModelAttribute @Valid Offer offer, BindingResult result, Model model, @AuthenticationPrincipal CurrentUser customUser){
-        if(result.hasErrors()){
-            User loggedUser = customUser.getUser();
-            User user = (User)userService.findById(loggedUser.getId());
-            List<Goods> goods = goodsService.findAll();
-            List<Receiver> receivers = receiverService.findAll();
-            model.addAttribute("goods",goods);
-            model.addAttribute("user",user);
-            model.addAttribute("receivers",receivers);
-            model.addAttribute("offer", offer);
-            return "app/giveAwayForm";
+    public String giveAwayAdded(@ModelAttribute Offer offer, Model model, @AuthenticationPrincipal CurrentUser customUser, @RequestParam Long locationId){
+        User loggedUser = customUser.getUser();
+        User user = (User)userService.findById(loggedUser.getId());
+        offer.setUser(user);
+        Set<Goods> offerGoods = offer.getGoods();
+        Set<Receiver> offerReceivers = offer.getReceivers();
+
+        Location pickedCity = (Location)locationService.findById(locationId);
+        List<User> organisations = userService.findOrgByLocation(pickedCity, true);
+        List<User> filteredOrgs = new ArrayList<>();
+        for(User o: organisations){
+           Set<Goods> matchGoods = o.getOrgGoods();
+           Set<Receiver> matchReceivers = o.getOrgReceivers();
+           if(matchGoods.containsAll(offerGoods) && matchReceivers.containsAll(offerReceivers)){
+               filteredOrgs.add(o);
+           }
         }
-        else{
-            return "app/dashboard";
-        }
+
+        model.addAttribute("filteredOrgs",filteredOrgs);
+        model.addAttribute("newOffer",offer);
+        return "app/giveAwayForm2";
     }
+
+    @PostMapping("/createGiveAwaySecond")
+    public String pickedOrg(HttpSession session, @RequestParam Long orgId, Model model){
+        User org = (User) userService.findById(orgId);
+        Offer newOffer = (Offer) session.getAttribute("newOffer");
+        newOffer.setInstitution(org);
+        model.addAttribute("newOffer", newOffer);
+        return "app/giveAwayForm3";
+    }
+
+    @PostMapping("/createGiveAwayThird")
+    public String deliveryData(HttpSession session, @ModelAttribute @Valid Offer newOffer, BindingResult result, Model model){
+        if(result.hasErrors()){
+            model.addAttribute("newOffer", newOffer);
+            return "app/giveAwayForm3";
+        }
+        Offer sessionOffer = (Offer) session.getAttribute("newOffer");
+        newOffer.setGoods(sessionOffer.getGoods());
+        newOffer.setReceivers(sessionOffer.getReceivers());
+        model.addAttribute("newOffer", newOffer);
+        return "app/giveAwayForm4";
+    }
+
+    @PostMapping("/addGiveAway")
+    public String confirmedGiveAway(HttpSession session){
+        Offer sessionOffer = (Offer) session.getAttribute("newOffer");
+        offerService.save(sessionOffer);
+        //session.removeAttribute("newOffer");
+        return "app/giveAwayConfirm";
+    }
+
+
 
     @GetMapping("/editUser")
     public String editUser(@AuthenticationPrincipal CurrentUser customUser, Model model){
@@ -144,8 +203,6 @@ public class AppController {
     public String addGathering(Model model){
         List<Receiver> receivers = receiverService.findAll();
         List<Goods> goods = goodsService.findAll();
-        Gathering gathering = new Gathering();
-
 
         model.addAttribute("receivers", receivers);
         model.addAttribute("goods", goods);
@@ -157,13 +214,16 @@ public class AppController {
     @PostMapping("/addGathering")
     public String addedGathering(@ModelAttribute @Valid Gathering gathering, BindingResult result, Model model, @AuthenticationPrincipal CurrentUser customUser){
         if(result.hasErrors()){
+            List<Receiver> receivers = receiverService.findAll();
+            List<Goods> goods = goodsService.findAll();
+
+            model.addAttribute("receivers", receivers);
+            model.addAttribute("goods", goods);
             model.addAttribute("gathering", gathering);
             return "app/gatheringForm";
         }
         User loggedUser = customUser.getUser();
         User user = (User) userService.findById(loggedUser.getId());
-        Date date = new Date();
-        gathering.setCreated(new Timestamp(date.getTime()));
         gathering.setUser(user);
         gatheringService.save(gathering);
         return "redirect:/app/dashboard";

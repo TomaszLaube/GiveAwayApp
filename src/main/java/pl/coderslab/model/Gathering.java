@@ -21,7 +21,6 @@ public class Gathering {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     @NotBlank
     @Size(max=100)
     private String street;
@@ -41,9 +40,6 @@ public class Gathering {
 
     @NotNull
     private Date date;
-
-    @NotNull
-    private Time time;
 
     @NotBlank
     private String description;
@@ -111,14 +107,6 @@ public class Gathering {
 
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Time getTime() {
-        return time;
-    }
-
-    public void setTime(Time time) {
-        this.time = time;
     }
 
     public String getDescription() {
