@@ -37,40 +37,39 @@
             <li><a href="#">Kontakt</a></li>
         </ul>
         <ul class="slogan--buttons">
-            <li><a href="/app/createGiveAway" class="btn btn--highlighted">Oddaj rzeczy</a></li>
-            <li><a href="/app/addGathering" class="btn btn--highlighted">Zorganizuj zbiórkę</a></li>
-            <li><a href="/app/editUser" class="btn">Edytuj profil</a></li>
-            <li><a href="/app/userOffers" class="btn">Przekazane datki</a></li>
-            <li><a href="/app/userGatherings" class="btn">Organizowane zbiórki</a></li>
+            <li><a href="/admin/adminList" class="btn btn--highlighted">Lista administratorów</a></li>
+            <li><a href="/admin/addAdmin" class="btn btn--highlighted">Dodaj administratora</a></li>
+            <li><a href="/admin/orgList" class="btn">Lista instytucji</a></li>
+            <li><a href="/admin/addOrg" class="btn">Dodaj instytucję</a></li>
+            <li><a href="/admin/addOrg" class="btn">Lista użytkowników</a></li>
+            <li><a href="/admin/addOrg" class="btn">Dodaj użytkownika</a></li>
+            <li><a href="/admin/editAdmin" class="btn">Edytuj konto</a></li>
         </ul>
     </nav>
 </header>
 
 <section class="login-page">
-    <h2>Witaj, xxx</h2>
+    <h2>Witaj, ${admin.firstName} ${admin.lastName}</h2>
+
+    <ul>
+        <c:forEach items="${admins}" var="adminToList">
+            <div>
+                ${adminToList.firstName}
+                    <a href="/admin/modAccess/${adminToList.id}" class="btn">Blokuj</a>
+            </div>
+            <div>
+                <a href="/admin/modAdmin/${adminToList.id}" class="btn">Edytuj admina</a>
+            </div>
+            <div>
+                <a href="/admin/changeRole/${adminToList.id}" class="btn">Zmien role</a>
+            </div>
+        </c:forEach>
+    </ul>
+
+
 </section>
 
-<section class="stats">
-    <div class="container container--40">
-        <div class="stats--item">
-            <em>${bagsNum}</em>
-            <h3>Oddanych worków</h3>
-            <p></p>
-        </div>
 
-        <div class="stats--item">
-            <em>${supportedOrgsNum}</em>
-            <h3>Wspartych organizacji</h3>
-            <p></p>
-        </div>
-
-        <div class="stats--item">
-            <em>${gatheringsNum}</em>
-            <h3>Zorganizowanych zbiórek</h3>
-            <p></p>
-        </div>
-    </div>
-</section>
 
 
 <footer>

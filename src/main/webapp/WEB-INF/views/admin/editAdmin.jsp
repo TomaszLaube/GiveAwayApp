@@ -31,7 +31,7 @@
 
 <section class="login-page">
     <h2>Edytuj podstawowe dane</h2>
-    <form:form method="post" modelAttribute="user">
+    <form:form method="post" modelAttribute="admin">
         <label class="description" for="emailId">Adres Email:</label>
         <div class="form-group">
 
@@ -54,10 +54,12 @@
             <form:errors path="lastName" element="div"/>
         </div>
 
-        <form:hidden path="id" value="${user.id}"/>
-        <form:hidden path="password" value="${user.password}"/>
-        <form:hidden path="enabled" value="${user.enabled}"/>
-        <form:hidden path="validated" value="${user.validated}"/>
+        <form:hidden path="id" value="${admin.id}"/>
+        <form:hidden path="password" value="${admin.password}"/>
+        <form:hidden path="enabled" value="${admin.enabled}"/>
+        <form:hidden path="validated" value="${admin.validated}"/>
+        <form:hidden path="name" value="${admin.name}"/>
+        <form:hidden path="description" value="${admin.description}"/>
 
         <div class="form-group form-group--buttons">
             <button class="btn" type="submit">Aktualizuj konto</button>

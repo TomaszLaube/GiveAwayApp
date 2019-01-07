@@ -1,8 +1,10 @@
 package pl.coderslab.service;
 
 import pl.coderslab.model.Location;
+import pl.coderslab.model.Role;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface UserService<U> {
@@ -18,4 +20,5 @@ public interface UserService<U> {
     U findByEmail(String email);
     List<U> findOrgByLocation(Location location, boolean org);
     List<U> findOrg(boolean org);
+    List<U> findByRole(Set<Role> roles);
 }

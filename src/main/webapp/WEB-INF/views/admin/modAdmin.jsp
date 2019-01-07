@@ -31,7 +31,7 @@
 
 <section class="login-page">
     <h2>Edytuj podstawowe dane</h2>
-    <form:form method="post" modelAttribute="user">
+    <form:form method="post" modelAttribute="admin">
         <label class="description" for="emailId">Adres Email:</label>
         <div class="form-group">
 
@@ -54,24 +54,20 @@
             <form:errors path="lastName" element="div"/>
         </div>
 
-        <form:hidden path="id" value="${user.id}"/>
-        <form:hidden path="password" value="${user.password}"/>
-        <form:hidden path="enabled" value="${user.enabled}"/>
-        <form:hidden path="validated" value="${user.validated}"/>
+        <form:hidden path="id" value="${admin.id}"/>
+        <form:hidden path="password" value="${admin.password}"/>
+        <form:hidden path="enabled" value="${admin.enabled}"/>
+        <form:hidden path="validated" value="${admin.validated}"/>
+        <form:hidden path="name" value="${admin.name}"/>
+        <form:hidden path="description" value="${admin.description}"/>
 
         <div class="form-group form-group--buttons">
             <button class="btn" type="submit">Aktualizuj konto</button>
         </div>
     </form:form>
 
-    <h2>Zmiana hasła</h2>
-    <form action="/app/changePassword" method="post">
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Aktualne hasło" name="oldPassword" required/>
-            <c:if test="${incorrectOldPassword}">
-                <div class="error">Niepoprawne hasło</div>
-            </c:if>
-        </div>
+    <h2>Zmiana hasła administratora ${admin.firstName} ${admin.lastName}</h2>
+    <form action="/admin/changePassword/${admin.id}" method="post">
         <div class="form-group">
             <input type="password" class="form-control" placeholder="Nowe hasło" name="newPassword" required/>
         </div>
@@ -84,7 +80,7 @@
         <input type="hidden" name="${_csrf.parameterName}"
                value="${_csrf.token}" />
         <div class="form-group form-group--buttons">
-            <button class="btn" type="submit">Zmień hasło</button>
+            <button class="btn" type="submit">Ustaw hasło</button>
         </div>
     </form>
 </section>

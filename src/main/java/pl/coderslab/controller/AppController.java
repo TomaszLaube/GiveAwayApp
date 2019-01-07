@@ -51,23 +51,25 @@ public class AppController {
         User user = (User)userService.findById(loggedUser.getId());
         Set<Offer> offers = user.getOffers();
         Set<Gathering> gatherings = user.getGatherings();
+        List<User> supportedOrgs = new ArrayList<>();
 
         Long bagsNum = 0L;
-        Long offersNum = 0L;
         Long gatheringsNum = 0L;
 
         for(Offer o: offers){
             bagsNum += o.getBagNum();
-            offersNum++;
+            supportedOrgs.add(o.getInstitution());
         }
         for(Gathering g: gatherings){
             gatheringsNum++;
         }
+        supportedOrgs = supportedOrgs.stream()
+                .distinct()
+                .collect(Collectors.toList());
 
+        model.addAttribute("supportedOrgsNum", supportedOrgs.size());
         model.addAttribute("bagsNum", bagsNum);
-        model.addAttribute("offersNum", offersNum);
         model.addAttribute("gatheringsNum",gatheringsNum);
-
         return "app/dashboard";
     }
 
@@ -227,6 +229,21 @@ public class AppController {
         gathering.setUser(user);
         gatheringService.save(gathering);
         return "redirect:/app/dashboard";
+    }
+
+    @RequestMapping("/userOffers")
+    public String userOffers(Model model, @AuthenticationPrincipal CurrentUser customUser){
+        User loggedUser = customUser.getUser();
+        User fullLoggedUser = (User)userService.findById(loggedUser.getId());
+
+        List<Offer> newUserOffers = offerService.findUserOffers(fullLoggedUser.getId(),false);
+        List<Offer> sentUserOffers = offerService.findUserOffers(fullLoggedUser.getId(),true);
+
+        model.addAttribute("user",fullLoggedUser);
+        model.addAttribute("newUserOffers",newUserOffers);
+        model.addAttribute("sentUserOffers",sentUserOffers);
+
+        return "app/userOffers";
     }
 
 }

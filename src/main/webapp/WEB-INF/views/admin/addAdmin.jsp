@@ -30,63 +30,46 @@
 </header>
 
 <section class="login-page">
-    <h2>Edytuj podstawowe dane</h2>
-    <form:form method="post" modelAttribute="user">
-        <label class="description" for="emailId">Adres Email:</label>
-        <div class="form-group">
+    <h2>Dodaj admina</h2>
+    <form:form method="post" modelAttribute="admin">
 
-            <form:input path="email" placeholder="Email" required="true" id="emailId"/>
+        <div class="form-group">
+            <form:input path="email" placeholder="Email" required="true"/>
             <form:errors path="email" element="div"/>
             <c:if test="${emailExists}">
                 <div class="error">Ten adres email jest już zajęty</div>
             </c:if>
         </div>
-        <label class="description" for="firstNameId">Imię:</label>
-        <div class="form-group">
 
-            <form:input path="firstName" placeholder="Imię" required="true" id="firstNameId"/>
+        <div class="form-group">
+            <form:input path="firstName" placeholder="Imię" required="true"/>
             <form:errors path="firstName" element="div"/>
         </div>
-        <label class="description" for="lastNameId">Nazwisko:</label>
-        <div class="form-group">
 
-            <form:input path="lastName" placeholder="Nazwisko" required="true" id="lastNameId"/>
+        <div class="form-group">
+            <form:input path="lastName" placeholder="Nazwisko" required="true"/>
             <form:errors path="lastName" element="div"/>
         </div>
 
-        <form:hidden path="id" value="${user.id}"/>
-        <form:hidden path="password" value="${user.password}"/>
-        <form:hidden path="enabled" value="${user.enabled}"/>
-        <form:hidden path="validated" value="${user.validated}"/>
+        <div class="form-group">
+            <form:input path="password" type="password" placeholder="Hasło" required="true"/>
+            <form:errors path="password" element="div"/>
+        </div>
+
+        <div class="form-group">
+            <form:input path="checkPassword" type="password" placeholder="Powtórz hasło" required="true"/>
+            <form:errors path="checkPassword" element="div"/>
+            <c:if test="${incorrectPasswordCheck}">
+                <div class="error">Powtórz poprawnie hasło</div>
+            </c:if>
+        </div>
 
         <div class="form-group form-group--buttons">
-            <button class="btn" type="submit">Aktualizuj konto</button>
+            <button class="btn" type="submit">Załóż konto</button>
         </div>
+        <form:hidden path="name" value="N/A"/>
+        <form:hidden path="description" value="N/A"/>
     </form:form>
-
-    <h2>Zmiana hasła</h2>
-    <form action="/app/changePassword" method="post">
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Aktualne hasło" name="oldPassword" required/>
-            <c:if test="${incorrectOldPassword}">
-                <div class="error">Niepoprawne hasło</div>
-            </c:if>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Nowe hasło" name="newPassword" required/>
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" placeholder="Powtórz nowe hasło" name="newPasswordCheck" required/>
-            <c:if test="${incorrectNewPassword}">
-                <div class="error">Wprowadź nowe hasło dwukrotnie</div>
-            </c:if>
-        </div>
-        <input type="hidden" name="${_csrf.parameterName}"
-               value="${_csrf.token}" />
-        <div class="form-group form-group--buttons">
-            <button class="btn" type="submit">Zmień hasło</button>
-        </div>
-    </form>
 </section>
 
 <footer>
@@ -116,13 +99,14 @@
         <span class="bottom-line--copy">Copyright &copy; 2018</span>
         <div class="bottom-line--icons">
             <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-facebook.svg"
+            ><img src="resources/images/icon-facebook.svg"
             /></a>
             <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-instagram.svg"
+            ><img src="resources/images/icon-instagram.svg"
             /></a>
         </div>
     </div>
 </footer>
+<script src="/resources/js/app.js"></script>
 </body>
 </html>

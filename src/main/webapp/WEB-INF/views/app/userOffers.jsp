@@ -52,23 +52,31 @@
 
 <section class="stats">
     <div class="container container--40">
+
+
         <div class="stats--item">
-            <em>${bagsNum}</em>
-            <h3>Oddanych worków</h3>
-            <p></p>
+            <em>Niewysłane datki</em>
+            <h3><ul>
+                <c:forEach var="notSentOffer" items="${newUserOffers}">
+                    <li>${notSentOffer.date}, ${notSentOffer.institution.name}</li>
+                </c:forEach>
+            </ul></h3>
+
         </div>
 
         <div class="stats--item">
-            <em>${supportedOrgsNum}</em>
-            <h3>Wspartych organizacji</h3>
-            <p></p>
+            <em>Wysłane datki</em>
+            <h3><ul>
+                <c:forEach var="sentOffer" items="${sentUserOffers}">
+                    <li>${sentOffer.date}, ${sentOffer.institution.name}</li>
+                </c:forEach>
+            </ul></h3>
+
         </div>
 
-        <div class="stats--item">
-            <em>${gatheringsNum}</em>
-            <h3>Zorganizowanych zbiórek</h3>
-            <p></p>
-        </div>
+
+
+
     </div>
 </section>
 

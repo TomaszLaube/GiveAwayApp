@@ -38,4 +38,9 @@ public class GatheringServiceImpl implements GatheringService<Gathering> {
     public List<Gathering> findAll() {
         return gatheringRepository.findAll();
     }
+
+    @Override
+    public long countByUser(Long userId) {
+        return gatheringRepository.countGatheringsByUserId(userId);
+    }
 }

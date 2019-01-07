@@ -133,5 +133,10 @@ public class UserServiceImpl implements UserService<User> {
         return userRepository.findByOrg(org);
     }
 
+    @Override
+    public List<User> findByRole(Set<Role> roles) {
+        return userRepository.findByRoles(roles);
+    }
+
 
 }

@@ -2,9 +2,11 @@ package pl.coderslab.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pl.coderslab.model.Location;
+import pl.coderslab.model.Role;
 import pl.coderslab.model.User;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User,Long> {
@@ -13,4 +15,5 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findUserById(Long id);
     List<User> findByLocationAndOrg(Location location, boolean org);
     List<User> findByOrg(boolean org);
+    List<User> findByRoles(Set<Role> roles);
 }

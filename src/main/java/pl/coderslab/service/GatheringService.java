@@ -7,5 +7,6 @@ public interface GatheringService<G> {
     void edit(G g);
     G findById(Long id);
     List<G> findAll();
+    long countByUser(Long userId);
 
 }

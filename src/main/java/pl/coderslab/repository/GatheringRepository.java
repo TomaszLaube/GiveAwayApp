@@ -5,4 +5,6 @@ import pl.coderslab.model.Gathering;
 
 public interface GatheringRepository extends JpaRepository<Gathering,Long> {
     Gathering findGatheringById(Long id);
+
+    long countGatheringsByUserId(Long userId);
 }

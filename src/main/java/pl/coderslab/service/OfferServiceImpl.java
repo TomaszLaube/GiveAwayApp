@@ -38,4 +38,19 @@ public class OfferServiceImpl implements OfferService<Offer> {
     public List<Offer> findAll() {
         return offerRepository.findAll();
     }
+
+    @Override
+    public List<Offer> findUserOffers(Long userId, boolean sent) {
+        return offerRepository.findOffersByUserIdAndSentOrderByCreatedDesc(userId,sent);
+    }
+
+    @Override
+    public long countByUser(Long userId) {
+        return offerRepository.countOffersByUserId(userId);
+    }
+
+    @Override
+    public long countByOrg(Long orgId) {
+        return offerRepository.countOffersByInstitutionId(orgId);
+    }
 }
