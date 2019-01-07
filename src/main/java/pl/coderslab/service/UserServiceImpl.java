@@ -138,5 +138,25 @@ public class UserServiceImpl implements UserService<User> {
         return userRepository.findByRoles(roles);
     }
 
+    @Override
+    public void saveOrgByAdmin(User user) {
+        Role userRole = roleRepository.findByName("ROLE_ORG");
+        Set<Role> userRoles = user.getRoles();
+        userRoles.add(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setFirstName("N/A");
+        user.setLastName("N/A");
+        user.setOrg(true);
+        user.setValidated(true);
+        userRepository.save(user);
+        /*try{
+            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
+        }catch(AddressException e){
+            e.printStackTrace();
+        }catch(MessagingException e){
+            e.printStackTrace();
+        }*/
+    }
+
 
 }

@@ -49,27 +49,26 @@
 </header>
 
 <section class="login-page">
-    <h2>Pozostali administratorzy</h2>
+    <h2>Lista zaufanych instytucji</h2>
 
     <ul>
-        <c:forEach items="${admins}" var="adminToList">
+        <c:forEach items="${orgs}" var="org">
             <div>
-                ${adminToList.firstName}
-                    <a href="/admin/modAccess/${adminToList.id}" class="btn">Blokuj</a>
+                    ${org.name}
+                    ${org.location.name}
+                <a href="/admin/modOrgAccess/${org.id}" class="btn">Blokuj</a>
             </div>
             <div>
-                <a href="/admin/modAdmin/${adminToList.id}" class="btn">Edytuj admina</a>
+                <a href="/admin/modOrg/${org.id}" class="btn">Edytuj dane</a>
             </div>
             <div>
-                <a href="/admin/changeRole/${adminToList.id}" class="btn">Zmien role</a>
+                <a href="/admin/orgDetails/${org.id}" class="btn">Szczegóły</a>
             </div>
         </c:forEach>
     </ul>
 
 
 </section>
-
-
 
 
 <footer>

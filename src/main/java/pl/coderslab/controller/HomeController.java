@@ -79,6 +79,12 @@ public class HomeController {
     public String registeredOrganisation(@ModelAttribute @Valid User user, BindingResult result, Model model){
         User emailCheck = (User)userService.findByEmail(user.getEmail());
         if(result.hasErrors()){
+            List<Location> locations = locationService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            List<Goods> goods = goodsService.findAll();
+            model.addAttribute("receivers", receivers);
+            model.addAttribute("goods",goods);
+            model.addAttribute("locations",locations);
             model.addAttribute("user",user);
             return "home/registrationOrg";
         } else if(emailCheck != null || !user.getPassword().equals(user.getCheckPassword())){
@@ -87,6 +93,12 @@ public class HomeController {
             } if(!user.getPassword().equals(user.getCheckPassword())){
                 model.addAttribute("incorrectPasswordCheck",true);
             }
+            List<Location> locations = locationService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            List<Goods> goods = goodsService.findAll();
+            model.addAttribute("receivers", receivers);
+            model.addAttribute("goods",goods);
+            model.addAttribute("locations",locations);
             model.addAttribute("user", user);
             return "home/registrationOrg";
         }
@@ -125,7 +137,7 @@ public class HomeController {
             }else if(r.getName().equals(userRole.getName())){
                 isUser = true;
                 break;
-            }else if(r.getName().equals((userRole.getName()))){
+            }else if(r.getName().equals((orgRole.getName()))){
                 isOrg = true;
                 break;
             }
