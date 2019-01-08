@@ -52,16 +52,18 @@
     <h2>Pozostali administratorzy</h2>
 
     <ul>
-        <c:forEach items="${admins}" var="adminToList">
+        <c:forEach items="${users}" var="user">
             <div>
-                ${adminToList.firstName}
-                    <a href="/admin/modAccess/${adminToList.id}" class="btn">Blokuj</a>
+                    ${user.firstName} ${user.lastName} ${user.email}
             </div>
             <div>
-                <a href="/admin/modAccount/${adminToList.id}" class="btn">Edytuj admina</a>
+                <a href="/admin/modAccess/${user.id}" class="btn">Blokuj</a>
             </div>
             <div>
-                <a href="/admin/changeRole/${adminToList.id}" class="btn">Zmien role</a>
+                <a href="/admin/modAccount/${user.id}" class="btn">Edytuj dane użytkownika</a>
+            </div>
+            <div>
+                <a href="/admin/changeRole/${user.id}" class="btn">Zmien role</a>
             </div>
         </c:forEach>
     </ul>

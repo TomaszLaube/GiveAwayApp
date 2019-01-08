@@ -31,7 +31,7 @@
 
 <section class="login-page">
     <h2>Edytuj podstawowe dane</h2>
-    <form:form method="post" modelAttribute="org">
+    <form:form method="post" action="/admin/modOrg/${org.id}" modelAttribute="org">
     <div class="form-group">
         <form:input path="email" placeholder="Email" required="true"/>
         <form:errors path="email" element="div"/>

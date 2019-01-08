@@ -22,4 +22,5 @@ public interface UserService<U> {
     List<U> findOrg(boolean org);
     List<U> findByRole(Set<Role> roles);
     void saveOrgByAdmin(U u);
+    void saveUserByAdmin(U u);
 }

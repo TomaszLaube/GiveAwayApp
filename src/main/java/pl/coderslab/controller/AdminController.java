@@ -91,87 +91,154 @@ public class AdminController {
     }
 
 
-    @RequestMapping("/modAccess/{adminId}")
-    public String blockAdmin(@PathVariable Long adminId){
-        User toChange = (User)userService.findById(adminId);
-        if(toChange!=null){
+    @RequestMapping("/modAccess/{userId}")
+    public String blockAdmin(@PathVariable Long userId, @AuthenticationPrincipal CurrentUser customUser){
+        User toChange = (User)userService.findById(userId);
+        User loggedAdmin = customUser.getUser();
+        Role adminRole = (Role)roleService.findByRole("ROLE_ADMIN");
+        Role userRole = (Role)roleService.findByRole("ROLE_USER");
+        if(toChange!=null && toChange.getId() == loggedAdmin.getId()){
+            return "redirect:/admin/403";
+        }
+        else if(toChange!=null){
             if(toChange.isEnabled()){
                 toChange.setEnabled(false);
             } else{
                 toChange.setEnabled(true);
             }
             userService.update(toChange);
-            return "redirect:/admin/adminList";
+            if(toChange.getRoles().iterator().next().getName().equals(adminRole.getName())){
+                return "redirect:/admin/adminList";
+            } else if(toChange.getRoles().iterator().next().getName().equals(userRole.getName())) {
+                return "redirect:/admin/userList";
+            } else {
+                return "redirect:/admin/orgList";
+            }
+
         } else{
             return "redirect:/admin/403";
         }
-
     }
-
-    @RequestMapping("/changeRole/{adminId}")
-    public String changeRole(@PathVariable Long adminId){
-        User toChange = (User)userService.findById(adminId);
+    @RequestMapping("/changeRole/{userId}")
+    public String changeRole(@PathVariable Long userId){
+        User toChange = (User)userService.findById(userId);
         Set<Role> roles = toChange.getRoles();
-        Role user = (Role)roleService.findByRole("ROLE_USER");
-        Role admin = (Role)roleService.findByRole("ROLE_ADMIN");
+        Role userRole = (Role)roleService.findByRole("ROLE_USER");
+        Role adminRole = (Role)roleService.findByRole("ROLE_ADMIN");
 
         if(roles.size()>0 && toChange!=null){
             Set<Role> newRole = new HashSet<>();
             Role current = roles.iterator().next();
-            if(current.getName().equals(admin.getName())){
-                newRole.add(user);
+            if(current.getName().equals(adminRole.getName())){
+                newRole.add(userRole);
                 toChange.setRoles(newRole);
+                userService.update(toChange);
+                return "redirect:/admin/adminList";
             }
-            else if(current.getName().equals(user.getName())){
-                newRole.add(admin);
+            else if(current.getName().equals(userRole.getName())){
+                newRole.add(adminRole);
                 toChange.setRoles(newRole);
+                userService.update(toChange);
+                return "redirect:/admin/userList";
             }
-            userService.update(toChange);
-        }else {
             return "redirect:/403";
         }
-        return "redirect:/admin/adminList";
+        else {
+            return "redirect:/403";
+        }
+
     }
 
-    @GetMapping("/modAdmin/{adminId}")
-    public String modAdmin(@PathVariable Long adminId, Model model){
-        User adminToMod = (User)userService.findById(adminId);
-        if(adminToMod!=null){
-            model.addAttribute("admin", adminToMod);
-            return "admin/modAdmin";
+    @GetMapping("/modAccount/{userId}")
+    public String modAdmin(@PathVariable Long userId, Model model){
+        User userToMod = (User)userService.findById(userId);
+        if(userToMod!=null){
+            if(userToMod.isOrg() == true){
+                List<Location> locations = locationService.findAll();
+                List<Receiver> receivers = receiverService.findAll();
+                List<Goods> goods = goodsService.findAll();
+                model.addAttribute("receivers", receivers);
+                model.addAttribute("goods",goods);
+                model.addAttribute("locations",locations);
+                model.addAttribute("org", userToMod);
+                return "admin/modOrg";
+            } else{
+                model.addAttribute("user", userToMod);
+                return "admin/modAccount";
+            }
         } else{
             return "redirect:/403";
         }
     }
 
-    @PostMapping("/modAdmin/{adminId}")
-    public String moddedAdmin(@ModelAttribute @Valid User admin, BindingResult result, Model model){
-        User emailCheck = (User)userService.findByEmail(admin.getEmail());
+    @PostMapping("/modAccount/{userId}")
+    public String moddedAdmin(@ModelAttribute @Valid User user, BindingResult result, Model model){
+        User emailCheck = (User)userService.findByEmail(user.getEmail());
         if(result.hasErrors()){
-            model.addAttribute("admin",admin);
-            return "admin/modAdmin";
-        }else if(emailCheck!=null && emailCheck.getId()!=admin.getId()){
-            model.addAttribute("user",admin);
+            model.addAttribute("user",user);
+            return "admin/modAccount";
+        }else if(emailCheck!=null && emailCheck.getId()!=user.getId()){
+            model.addAttribute("user",user);
             model.addAttribute("emailExists",true);
-            return "admin/modAdmin";
+            return "admin/modAccount";
         }else{
-            userService.edit(admin);
-            return "redirect:/admin/adminList";
+            userService.edit(user);
+            Role userRole = (Role)roleService.findByRole("ROLE_USER");
+            if(user.getRoles().iterator().next().getName().equals(userRole.getName())){
+                return "redirect:/admin/userList";
+            } else {
+                return "redirect:/admin/adminList";
+            }
         }
     }
 
-    @PostMapping("/changePassword/{adminId}")
-    public String changedPwd(@PathVariable Long adminId, @RequestParam String newPassword, @RequestParam String newPasswordCheck, Model model){
-        User admin = (User)userService.findById(adminId);
-        if(admin!=null){
+    @PostMapping("/modOrg/{orgId}")
+    public String moddedOrg(@ModelAttribute @Valid User org, BindingResult result, Model model){
+        User emailCheck = (User)userService.findByEmail(org.getEmail());
+        if(result.hasErrors()){
+            List<Location> locations = locationService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            List<Goods> goods = goodsService.findAll();
+            model.addAttribute("receivers", receivers);
+            model.addAttribute("goods",goods);
+            model.addAttribute("locations",locations);
+            model.addAttribute("org",org);
+            return "admin/modOrg";
+        } else if(emailCheck!=null && emailCheck.getId()!=org.getId()){
+            List<Location> locations = locationService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            List<Goods> goods = goodsService.findAll();
+            model.addAttribute("receivers", receivers);
+            model.addAttribute("goods",goods);
+            model.addAttribute("locations",locations);
+            model.addAttribute("org",org);
+            model.addAttribute("emailExists", true);
+            return "admin/modOrg";
+        } else{
+            User tempOrg = (User)userService.findById(org.getId());
+            org.setRoles(tempOrg.getRoles());
+            userService.update(org);
+            return "redirect:/admin/orgList";
+        }
+    }
+
+    @PostMapping("/changePassword/{userId}")
+    public String changedPwd(@PathVariable Long userId, @RequestParam String newPassword, @RequestParam String newPasswordCheck, Model model){
+        User user = (User)userService.findById(userId);
+        if(user!=null && user.isOrg() == false){
             if(!newPassword.equals(newPasswordCheck)){
-                model.addAttribute("admin",admin);
+                model.addAttribute("user",user);
                 model.addAttribute("incorrectNewPassword", true);
-                return "admin/modAdmin";
+                return "admin/modAccount";
             } else{
-                admin.setPassword(newPassword);
-                userService.changePassword(admin);
-                return "redirect:/admin/adminList";
+                user.setPassword(newPassword);
+                userService.changePassword(user);
+                Role userRole = (Role)roleService.findByRole("ROLE_USER");
+                if(user.getRoles().iterator().next().getName().equals(userRole.getName())){
+                    return "redirect:/admin/userList";
+                } else {
+                    return "redirect:/admin/adminList";
+                }
             }
         } else{
             return "redirect:/403";
@@ -276,72 +343,13 @@ public class AdminController {
         }
     }
 
-    @RequestMapping("/modOrgAccess/{orgId}")
-    public String modOrgAccess(@PathVariable Long orgId){
-        User org = (User)userService.findById(orgId);
-        if(org!=null && org.isOrg()==true){
-            if(org.isEnabled() == false){
-                org.setEnabled(true);
-            } else{
-                org.setEnabled(false);
-            }
-            userService.update(org);
-            return "redirect:/admin/orgList";
-        } else{
-            return "redirect:/403";
-        }
-    }
 
-    @GetMapping("/modOrg/{orgId}")
-    public String modOrg(@PathVariable Long orgId, Model model){
-        User org = (User)userService.findById(orgId);
-        if(org!=null && org.isOrg()==true){
-            List<Location> locations = locationService.findAll();
-            List<Receiver> receivers = receiverService.findAll();
-            List<Goods> goods = goodsService.findAll();
-            model.addAttribute("receivers", receivers);
-            model.addAttribute("goods",goods);
-            model.addAttribute("locations",locations);
-            model.addAttribute("org",org);
-            return "admin/modOrg";
-        } else {
-            return "redirect:/403";
-        }
 
-    }
-
-    @PostMapping("/modOrg/{orgId}")
-    public String moddedOrg(@ModelAttribute @Valid User org, BindingResult result, Model model){
-        User emailCheck = (User)userService.findByEmail(org.getEmail());
-        if(result.hasErrors()){
-            List<Location> locations = locationService.findAll();
-            List<Receiver> receivers = receiverService.findAll();
-            List<Goods> goods = goodsService.findAll();
-            model.addAttribute("receivers", receivers);
-            model.addAttribute("goods",goods);
-            model.addAttribute("locations",locations);
-            model.addAttribute("org",org);
-            return "admin/modOrg";
-        } else if(emailCheck!=null && emailCheck.getId()!=org.getId()){
-            List<Location> locations = locationService.findAll();
-            List<Receiver> receivers = receiverService.findAll();
-            List<Goods> goods = goodsService.findAll();
-            model.addAttribute("receivers", receivers);
-            model.addAttribute("goods",goods);
-            model.addAttribute("locations",locations);
-            model.addAttribute("org",org);
-            model.addAttribute("emailExists", true);
-            return "admin/modOrg";
-        } else{
-            userService.update(org);
-            return "redirect:/admin/orgList";
-        }
-    }
 
     @PostMapping("/changeOrgPassword/{orgId}")
     public String changeOrgPassword(@PathVariable Long orgId, Model model, @RequestParam String newPassword, @RequestParam String newPasswordCheck){
         User org = (User)userService.findById(orgId);
-        if(org!=null){
+        if(org!=null && org.isOrg() == true){
             if(!newPassword.equals(newPasswordCheck)){
                 model.addAttribute("org",org);
                 model.addAttribute("incorrectNewPassword", true);
@@ -365,6 +373,43 @@ public class AdminController {
         } else {
             return "redirect:/403";
         }
+    }
+
+    @GetMapping("/addUser")
+    public String addUser(Model model){
+        model.addAttribute("user", new User());
+        return "admin/addUser";
+    }
+
+    @PostMapping("/addUser")
+    public String addedUser(@ModelAttribute @Valid User user, BindingResult result, Model model){
+        User emailCheck = (User)userService.findByEmail(user.getEmail());
+        if(result.hasErrors()){
+            model.addAttribute("user",user);
+            return "admin/addUser";
+        } else if(emailCheck != null || !user.getPassword().equals(user.getCheckPassword())){
+            if(emailCheck != null){
+                model.addAttribute("emailExists", true);
+            } if(!user.getPassword().equals(user.getCheckPassword())){
+                model.addAttribute("incorrectPasswordCheck",true);
+            }
+            model.addAttribute("user", user);
+            return "admin/addUser";
+        }
+        else {
+            userService.saveUserByAdmin(user);
+            return "home/registrationComplete";
+        }
+    }
+
+    @RequestMapping("/userList")
+    public String userList(Model model){
+        Role userRole = (Role)roleService.findByRole("ROLE_USER");
+        Set<Role> userRoles = new HashSet<>();
+        userRoles.add(userRole);
+        List<User> users = userService.findByRole(userRoles);
+        model.addAttribute("users", users);
+        return "admin/userList";
     }
 
 }

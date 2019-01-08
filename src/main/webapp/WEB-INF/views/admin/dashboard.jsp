@@ -41,8 +41,8 @@
             <li><a href="/admin/addAdmin" class="btn btn--highlighted">Dodaj administratora</a></li>
             <li><a href="/admin/orgList" class="btn">Lista instytucji</a></li>
             <li><a href="/admin/addOrg" class="btn">Dodaj instytucję</a></li>
-            <li><a href="/admin/addOrg" class="btn">Lista użytkowników</a></li>
-            <li><a href="/admin/addOrg" class="btn">Dodaj użytkownika</a></li>
+            <li><a href="/admin/userList" class="btn">Lista użytkowników</a></li>
+            <li><a href="/admin/addUser" class="btn">Dodaj użytkownika</a></li>
             <li><a href="/admin/editAdmin" class="btn">Edytuj konto</a></li>
         </ul>
     </nav>

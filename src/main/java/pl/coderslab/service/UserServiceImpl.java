@@ -159,4 +159,23 @@ public class UserServiceImpl implements UserService<User> {
     }
 
 
+    @Override
+    public void saveUserByAdmin(User user) {
+        Role userRole = roleRepository.findByName("ROLE_USER");
+        Set<Role> userRoles = user.getRoles();
+        userRoles.add(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setName("N/A");
+        user.setDescription("N/A");
+        user.setOrg(false);
+        user.setValidated(true);
+        userRepository.save(user);
+        /*try{
+            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
+        }catch(AddressException e){
+            e.printStackTrace();
+        }catch(MessagingException e){
+            e.printStackTrace();
+        }*/
+    }
 }

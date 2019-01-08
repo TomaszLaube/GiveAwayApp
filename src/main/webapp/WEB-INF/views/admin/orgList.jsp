@@ -56,10 +56,10 @@
             <div>
                     ${org.name}
                     ${org.location.name}
-                <a href="/admin/modOrgAccess/${org.id}" class="btn">Blokuj</a>
+                <a href="/admin/modAccess/${org.id}" class="btn">Blokuj</a>
             </div>
             <div>
-                <a href="/admin/modOrg/${org.id}" class="btn">Edytuj dane</a>
+                <a href="/admin/modAccount/${org.id}" class="btn">Edytuj dane</a>
             </div>
             <div>
                 <a href="/admin/orgDetails/${org.id}" class="btn">Szczegóły</a>
