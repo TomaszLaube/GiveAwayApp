@@ -8,7 +8,9 @@ public interface OfferService<O> {
     O findById(Long id);
     List<O> findAll();
     List<O> findUserOffers(Long userId, boolean sent);
+    List<O> findOrgOffers(Long orgId, boolean sent, boolean received);
 
     long countByUser(Long userId);
     long countByOrg(Long orgId);
+    long countByOrgAndSent(Long orgId, boolean sent);
 }

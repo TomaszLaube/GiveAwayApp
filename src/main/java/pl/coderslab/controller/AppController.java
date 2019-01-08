@@ -246,4 +246,33 @@ public class AppController {
         return "app/userOffers";
     }
 
+    @RequestMapping("/offerDetails/{offerId}")
+    public String offerDetails(@PathVariable Long offerId, @AuthenticationPrincipal CurrentUser customUser, Model model){
+        User loggedUser = customUser.getUser();
+        Offer offer = (Offer)offerService.findById(offerId);
+        if(offer!=null && offer.getUser().getId()==loggedUser.getId()){
+            model.addAttribute("offer", offer);
+            return "app/offerDetails";
+        } else{
+            return "redirect:/403";
+        }
+
+
+    }
+
+    @RequestMapping("/sentOffer/{offerId}")
+    public String sentOffer(@PathVariable Long offerId, Model model, @AuthenticationPrincipal CurrentUser customUser){
+        User loggedUser = customUser.getUser();
+        Offer offer = (Offer)offerService.findById(offerId);
+        //SPRAWDZENIE DATY- wyslane przed przyjazdem kuriera??
+        if(offer!=null && offer.getUser().getId()==loggedUser.getId()){
+            offer.setSent(true);
+            offerService.edit(offer);
+            return "redirect:/app/userOffers";
+        } else{
+            return "redirect:/403";
+        }
+
+    }
+
 }

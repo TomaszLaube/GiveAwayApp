@@ -52,6 +52,10 @@ public class Offer {
 
     private boolean sent = false;
 
+    private boolean opened = false;
+
+    private boolean received = false;
+
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     Set<Goods> goods = new HashSet<>();
@@ -149,6 +153,22 @@ public class Offer {
 
     public void setSent(boolean sent) {
         this.sent = sent;
+    }
+
+    public boolean isOpened() {
+        return opened;
+    }
+
+    public void setOpened(boolean opened) {
+        this.opened = opened;
+    }
+
+    public boolean isReceived() {
+        return received;
+    }
+
+    public void setReceived(boolean received) {
+        this.received = received;
     }
 
     public Set<Goods> getGoods() {

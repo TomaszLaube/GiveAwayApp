@@ -8,10 +8,12 @@ import java.util.List;
 public interface OfferRepository extends JpaRepository<Offer, Long> {
     Offer findOfferById(Long id);
     List<Offer> findOffersByUserIdAndSentOrderByCreatedDesc(Long userId, boolean sent);
+    List<Offer> findOffersByInstitutionIdAndSentAndReceivedOrderByCreatedDesc(Long institutionId, boolean sent, boolean received);
 
 
     long countOffersByUserId(Long userId);
     long countOffersByInstitutionId(Long institutionId);
+    long countOffersByInstitutionIdAndSent(Long institutionId, boolean sent);
 
 
 }

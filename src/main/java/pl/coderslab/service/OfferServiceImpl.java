@@ -45,6 +45,11 @@ public class OfferServiceImpl implements OfferService<Offer> {
     }
 
     @Override
+    public List<Offer> findOrgOffers(Long orgId, boolean sent, boolean received) {
+        return offerRepository.findOffersByInstitutionIdAndSentAndReceivedOrderByCreatedDesc(orgId, sent, received);
+    }
+
+    @Override
     public long countByUser(Long userId) {
         return offerRepository.countOffersByUserId(userId);
     }
@@ -52,5 +57,10 @@ public class OfferServiceImpl implements OfferService<Offer> {
     @Override
     public long countByOrg(Long orgId) {
         return offerRepository.countOffersByInstitutionId(orgId);
+    }
+
+    @Override
+    public long countByOrgAndSent(Long orgId, boolean sent) {
+        return offerRepository.countOffersByInstitutionIdAndSent(orgId,sent);
     }
 }

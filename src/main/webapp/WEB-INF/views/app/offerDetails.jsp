@@ -47,37 +47,51 @@
 </header>
 
 <section class="login-page">
-    <h2>Witaj, xxx</h2>
+    <h2>Szczegóły datku</h2>
 </section>
 
 <section class="stats">
-    <div class="container container--40">
-
+    <div class="container ">
 
         <div class="stats--item">
-            <em>Niewysłane datki</em>
+            <em>Przekazywane przedmioty:</em>
             <h3><ul>
-                <c:forEach var="notSentOffer" items="${newUserOffers}">
-                    <li>${notSentOffer.date}, ${notSentOffer.institution.name}</li>
-                    <a href="/app/offerDetails/${notSentOffer.id}" class="btn btn--highlighted">Szczegóły</a>
+                <c:forEach var="good" items="${offer.goods}">
+                    <li>${good.name}, ${notSentOffer.institution.name}</li>
                 </c:forEach>
             </ul></h3>
 
         </div>
 
         <div class="stats--item">
-            <em>Wysłane datki</em>
+            <em>Instytucja odbiorcza:</em>
             <h3><ul>
-                <c:forEach var="sentOffer" items="${sentUserOffers}">
-                    <li>${sentOffer.date}, ${sentOffer.institution.name}</li>
-                    <a href="/app/offerDetails/${sentOffer.id}" class="btn btn--highlighted">Szczegóły</a>
-                </c:forEach>
+                <li>${offer.institution.name}</li>
+                <li>${offer.institution.description}</li>
             </ul></h3>
 
         </div>
 
+        <div class="stats--item">
+            <em>Dane dla kuriera:</em>
+            <h3><ul>
+                <li>${offer.street}</li>
+                <li>${offer.city}</li>
+                <li>${offer.postalCode}</li>
+                <li>${offer.telephone}</li>
+                <li>${offer.date}</li>
+                <li>${offer.additionalInstructions}</li>
+            </ul></h3>
 
+        </div>
 
+        <div class="stats--item">
+            <em>Zmiana statusu:</em>
+            <h3><ul>
+                <a href="/app/sentOffer/${offer.id}" class="btn btn--highlighted">Zmiana statusu</a>
+            </ul></h3>
+
+        </div>
 
     </div>
 </section>
