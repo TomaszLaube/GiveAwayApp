@@ -54,45 +54,36 @@
     <div class="container ">
 
         <div class="stats--item">
-            <em>Przekazywane przedmioty:</em>
+            <em>Zbierane przedmioty:</em>
             <h3><ul>
-                <c:forEach var="good" items="${offer.goods}">
-                    <li>${good.name}, ${notSentOffer.institution.name}</li>
+                <c:forEach var="good" items="${gathering.goods}">
+                    <li>${good.name}</li>
                 </c:forEach>
             </ul></h3>
 
         </div>
 
         <div class="stats--item">
-            <em>Instytucja odbiorcza:</em>
+            <em>Potrzebujący:</em>
             <h3><ul>
-                <li>${offer.institution.name}</li>
-                <li>${offer.institution.description}</li>
+                <c:forEach var="receiver" items="${gathering.receivers}">
+                    <li>${receiver.name}</li>
+                </c:forEach>
             </ul></h3>
 
         </div>
 
         <div class="stats--item">
-            <em>Dane dla kuriera:</em>
+            <em>Dane:</em>
             <h3><ul>
-                <li>${offer.street}</li>
-                <li>${offer.city}</li>
-                <li>${offer.postalCode}</li>
-                <li>${offer.telephone}</li>
-                <li>${offer.date}</li>
-                <li>${offer.additionalInstructions}</li>
+                <li>${gathering.street}</li>
+                <li>${gathering.city}</li>
+                <li>${gathering.postalCode}</li>
+                <li>${gathering.telephone}</li>
+                <li>${gathering.date}</li>
+                <li>${gathering.description}</li>
             </ul></h3>
-
         </div>
-        <c:if test="${offer.user.id == user.id}">
-            <div class="stats--item">
-                <em>Zmiana statusu:</em>
-                <h3><ul>
-                    <a href="/app/sentOffer/${offer.id}" class="btn btn--highlighted">Zmiana statusu</a>
-                </ul></h3>
-
-            </div>
-        </c:if>
 
     </div>
 </section>

@@ -37,63 +37,32 @@
             <li><a href="#">Kontakt</a></li>
         </ul>
         <ul class="slogan--buttons">
-            <li><a href="/app/createGiveAway" class="btn btn--highlighted">Oddaj rzeczy</a></li>
-            <li><a href="/app/addGathering" class="btn btn--highlighted">Zorganizuj zbiórkę</a></li>
-            <li><a href="/app/editUser" class="btn">Edytuj profil</a></li>
-            <li><a href="/app/userOffers" class="btn">Przekazane datki</a></li>
-            <li><a href="/app/userGatherings" class="btn">Organizowane zbiórki</a></li>
+            <li><a href="/org/newOffers" class="btn">Nowe datki</a></li>
+            <li><a href="/org/sentOffers" class="btn">Wysłane datki</a></li>
+            <li><a href="/org/receivedOffers" class="btn">Odebrane datki</a></li>
+            <li><a href="/org/updateAccount" class="btn">Edytuj konto</a></li>
         </ul>
     </nav>
 </header>
 
 <section class="login-page">
-    <h2>Szczegóły datku</h2>
+    <h2>Witaj, xxx</h2>
 </section>
 
 <section class="stats">
-    <div class="container ">
+    <div class="container container--40">
+
 
         <div class="stats--item">
-            <em>Przekazywane przedmioty:</em>
+            <em>Odebrane datki</em>
             <h3><ul>
-                <c:forEach var="good" items="${offer.goods}">
-                    <li>${good.name}, ${notSentOffer.institution.name}</li>
+                <c:forEach var="offer" items="${receivedOffers}">
+                    <li>${offer.date}, ${offer.user.firstName} ${offer.user.lastName}</li>
+                    <a href="/org/offerDetails/${offer.id}" class="btn btn--highlighted">Szczegóły</a>
                 </c:forEach>
             </ul></h3>
 
         </div>
-
-        <div class="stats--item">
-            <em>Instytucja odbiorcza:</em>
-            <h3><ul>
-                <li>${offer.institution.name}</li>
-                <li>${offer.institution.description}</li>
-            </ul></h3>
-
-        </div>
-
-        <div class="stats--item">
-            <em>Dane dla kuriera:</em>
-            <h3><ul>
-                <li>${offer.street}</li>
-                <li>${offer.city}</li>
-                <li>${offer.postalCode}</li>
-                <li>${offer.telephone}</li>
-                <li>${offer.date}</li>
-                <li>${offer.additionalInstructions}</li>
-            </ul></h3>
-
-        </div>
-        <c:if test="${offer.user.id == user.id}">
-            <div class="stats--item">
-                <em>Zmiana statusu:</em>
-                <h3><ul>
-                    <a href="/app/sentOffer/${offer.id}" class="btn btn--highlighted">Zmiana statusu</a>
-                </ul></h3>
-
-            </div>
-        </c:if>
-
     </div>
 </section>
 

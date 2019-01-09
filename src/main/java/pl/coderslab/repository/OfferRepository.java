@@ -14,6 +14,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
     long countOffersByUserId(Long userId);
     long countOffersByInstitutionId(Long institutionId);
     long countOffersByInstitutionIdAndSent(Long institutionId, boolean sent);
+    long countOffersByInstitutionIdAndSentAndReceivedOrderByCreatedDesc(Long institutionId, boolean sent, boolean received);
 
 
 }

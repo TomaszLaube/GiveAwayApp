@@ -12,7 +12,6 @@ import pl.coderslab.service.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -252,6 +251,7 @@ public class AppController {
         Offer offer = (Offer)offerService.findById(offerId);
         if(offer!=null && offer.getUser().getId()==loggedUser.getId()){
             model.addAttribute("offer", offer);
+            model.addAttribute("user", loggedUser);
             return "app/offerDetails";
         } else{
             return "redirect:/403";
@@ -273,6 +273,36 @@ public class AppController {
             return "redirect:/403";
         }
 
+    }
+
+    @RequestMapping("/userGatherings")
+    public String userGatherings(@AuthenticationPrincipal CurrentUser customUser, Model model){
+        User loggedUser = customUser.getUser();
+        List<Gathering> userGatherings = gatheringService.findAllUserGatherings(loggedUser.getId());
+        Date currentDate = new Date();
+        for(Gathering g: userGatherings){
+            if(g.getDate().before(currentDate)){
+                g.setActive(false);
+                gatheringService.edit(g);
+            }
+        }
+        List<Gathering> activeGatherings = gatheringService.findUserGatherings(loggedUser.getId(), true);
+        List<Gathering> inactiveGatherings = gatheringService.findUserGatherings(loggedUser.getId(), false);
+        model.addAttribute("activeGatherings", activeGatherings);
+        model.addAttribute("inactiveGatherings", inactiveGatherings);
+        return "app/userGatherings";
+    }
+
+    @RequestMapping("/gatheringDetails/{gatheringId}")
+    public String gatheringDetails(@PathVariable Long gatheringId, @AuthenticationPrincipal CurrentUser customUser, Model model){
+        User loggedUser = customUser.getUser();
+        Gathering gathering = (Gathering)gatheringService.findById(gatheringId);
+        if(gathering!=null && gathering.getUser().getId()==loggedUser.getId()){
+            model.addAttribute("gathering", gathering);
+            return "app/gatheringDetails";
+        } else{
+            return "redirect:/403";
+        }
     }
 
 }

@@ -47,52 +47,37 @@
 </header>
 
 <section class="login-page">
-    <h2>Szczegóły datku</h2>
+    <h2>Witaj, xxx</h2>
 </section>
 
 <section class="stats">
-    <div class="container ">
+    <div class="container container--40">
+
 
         <div class="stats--item">
-            <em>Przekazywane przedmioty:</em>
+            <em>Zaplanowane zbiórki</em>
             <h3><ul>
-                <c:forEach var="good" items="${offer.goods}">
-                    <li>${good.name}, ${notSentOffer.institution.name}</li>
+                <c:forEach var="activeG" items="${activeGatherings}">
+                    <li>${activeG.date}, ${activeG.description}</li>
+                    <a href="/app/gatheringDetails/${activeG.id}" class="btn btn--highlighted">Szczegóły</a>
                 </c:forEach>
             </ul></h3>
 
         </div>
 
         <div class="stats--item">
-            <em>Instytucja odbiorcza:</em>
+            <em>Poprzednie zbiórki</em>
             <h3><ul>
-                <li>${offer.institution.name}</li>
-                <li>${offer.institution.description}</li>
+                <c:forEach var="inactiveG" items="${inactiveGatherings}">
+                    <li>${activeG.date}, ${inactiveG.description}</li>
+                    <a href="/app/gatheringDetails/${inactiveG.id}" class="btn btn--highlighted">Szczegóły</a>
+                </c:forEach>
             </ul></h3>
 
         </div>
 
-        <div class="stats--item">
-            <em>Dane dla kuriera:</em>
-            <h3><ul>
-                <li>${offer.street}</li>
-                <li>${offer.city}</li>
-                <li>${offer.postalCode}</li>
-                <li>${offer.telephone}</li>
-                <li>${offer.date}</li>
-                <li>${offer.additionalInstructions}</li>
-            </ul></h3>
 
-        </div>
-        <c:if test="${offer.user.id == user.id}">
-            <div class="stats--item">
-                <em>Zmiana statusu:</em>
-                <h3><ul>
-                    <a href="/app/sentOffer/${offer.id}" class="btn btn--highlighted">Zmiana statusu</a>
-                </ul></h3>
 
-            </div>
-        </c:if>
 
     </div>
 </section>

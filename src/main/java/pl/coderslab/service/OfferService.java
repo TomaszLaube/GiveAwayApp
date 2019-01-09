@@ -13,4 +13,5 @@ public interface OfferService<O> {
     long countByUser(Long userId);
     long countByOrg(Long orgId);
     long countByOrgAndSent(Long orgId, boolean sent);
+    long countByOrgAndSentAndReceived(Long orgId, boolean sent, boolean received);
 }

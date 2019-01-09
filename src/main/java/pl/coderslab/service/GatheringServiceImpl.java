@@ -40,6 +40,16 @@ public class GatheringServiceImpl implements GatheringService<Gathering> {
     }
 
     @Override
+    public List<Gathering> findUserGatherings(Long userId, boolean active) {
+        return gatheringRepository.findByUserIdAndActiveOrderByDateDesc(userId, active);
+    }
+
+    @Override
+    public List<Gathering> findAllUserGatherings(Long userId) {
+        return gatheringRepository.findByUserId(userId);
+    }
+
+    @Override
     public long countByUser(Long userId) {
         return gatheringRepository.countGatheringsByUserId(userId);
     }

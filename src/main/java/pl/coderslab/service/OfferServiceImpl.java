@@ -63,4 +63,9 @@ public class OfferServiceImpl implements OfferService<Offer> {
     public long countByOrgAndSent(Long orgId, boolean sent) {
         return offerRepository.countOffersByInstitutionIdAndSent(orgId,sent);
     }
+
+    @Override
+    public long countByOrgAndSentAndReceived(Long orgId, boolean sent, boolean received) {
+        return offerRepository.countOffersByInstitutionIdAndSentAndReceivedOrderByCreatedDesc(orgId,sent,received);
+    }
 }
