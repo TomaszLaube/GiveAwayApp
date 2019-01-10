@@ -1,33 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
-
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Document</title>
-    <link rel="stylesheet" href="/resources/css/style.css"/>
-</head>
-<body>
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li><a href="/login">Zaloguj</a></li>
-            <li class="highlighted"><a href="/register">Załóż konto</a></li>
-        </ul>
-
-        <ul>
-            <li><a href="#">Start</a></li>
-            <li><a href="#">O co chodzi?</a></li>
-            <li><a href="#">O nas</a></li>
-            <li><a href="#">Fundacje i organizacje</a></li>
-            <li><a href="#">Kontakt</a></li>
-        </ul>
-    </nav>
-</header>
+<jsp:include page="loginHeader.jsp"/>
 
 <section class="login-page">
     <h2>Rejestracja przebiegła pomyślnie</h2>

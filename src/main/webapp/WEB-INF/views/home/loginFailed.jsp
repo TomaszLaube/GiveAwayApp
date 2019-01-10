@@ -5,8 +5,9 @@
 <section class="stats">
     <div class="container container--40">
         <div class="stats--item">
-            <em>Coś poszło nie tak</em>
-            <h2>Wystąpił błąd, spróbuj jeszcze raz</h2>
+            <em>Błędne dane logowania</em>
+            <h2>Spróbuj jeszcze raz</h2>
+            <a href="/login" class="btn btn--large">Zaloguj</a>
         </div>
     </div>
 </section>

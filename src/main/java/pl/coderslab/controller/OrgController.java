@@ -39,9 +39,6 @@ public class OrgController {
     public String orgDashboard(@AuthenticationPrincipal CurrentUser customUser, Model model){
         User loggedUser = customUser.getUser();
         User fullLoggedUser = (User)userService.findById(loggedUser.getId());
-        //List<Offer> sentOffers = offerService.findOrgOffers(loggedUser.getId(),true, false);
-
-        //List<Offer> receivedOffers = offerService.findOrgOffers(loggedUser.getId(),true, true);
 
         long receivedNum = offerService.countByOrgAndSentAndReceived(loggedUser.getId(),true, true);
         long sentNum = offerService.countByOrgAndSentAndReceived(loggedUser.getId(), true, false);

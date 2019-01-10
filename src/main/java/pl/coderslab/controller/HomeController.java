@@ -10,9 +10,9 @@ import pl.coderslab.model.*;
 import pl.coderslab.service.*;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -33,10 +33,44 @@ public class HomeController {
     @Autowired
     GoodsService goodsService;
 
+    @Autowired
+    OfferService offerService;
+
+    @Autowired
+    GatheringService gatheringService;
+
     @RequestMapping("/")
-    public String home(){
+    public String home(Model model){
+        List<Offer> allOffers = offerService.findAll();
+        List<Gathering> allGatherings = gatheringService.findAll();
+        List<User> supportedOrgs = new ArrayList<>();
+        List<User> allOrgs = userService.findOrg(true);
+        List<Gathering> activeGatherings = new ArrayList<>();
+        long bagNum = 0;
+        for(Offer o: allOffers){
+            bagNum += o.getBagNum();
+            supportedOrgs.add(o.getInstitution());
+        }
+        supportedOrgs = supportedOrgs.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        Date date = new Date();
+        for(Gathering g: allGatherings){
+            if(g.getDate().after(date)){
+                activeGatherings.add(g);
+            }
+        }
+        model.addAttribute("activeGatherings", activeGatherings);
+        model.addAttribute("orgNum", supportedOrgs.size());
+        model.addAttribute("bagNum", bagNum);
+        model.addAttribute("gatheringNum", allGatherings.size());
+        model.addAttribute("allOrgs", allOrgs);
         return "home/homepage";
     }
+
+
+
     @GetMapping("/register")
     public String registerUser(Model model){
         model.addAttribute("user", new User());
@@ -152,4 +186,107 @@ public class HomeController {
             return "redirect:/403";
         }
     }
+
+    @RequestMapping("/support")
+    public String support(Model model){
+        List<Offer> allOffers = offerService.findAll();
+        List<Gathering> allGatherings = gatheringService.findAll();
+        List<User> supportedOrgs = new ArrayList<>();
+        long bagNum = 0;
+        for(Offer o: allOffers){
+            bagNum += o.getBagNum();
+            supportedOrgs.add(o.getInstitution());
+        }
+        supportedOrgs = supportedOrgs.stream()
+                .distinct()
+                .collect(Collectors.toList());
+
+        model.addAttribute("orgNum", supportedOrgs.size());
+        model.addAttribute("bagNum", bagNum);
+        model.addAttribute("gatheringNum", allGatherings.size());
+        return "home/support";
+    }
+
+    @RequestMapping("/about")
+    public String about(){
+        return "home/about";
+    }
+
+    @RequestMapping("/orgOverview")
+    public String orgOverview(Model model){
+        List<Gathering> allGatherings = gatheringService.findAll();
+        List<User> allOrgs = userService.findOrg(true);
+        List<Gathering> activeGatherings = new ArrayList<>();
+        Date date = new Date();
+        for(Gathering g: allGatherings){
+            if(g.getDate().after(date)){
+                activeGatherings.add(g);
+            }
+        }
+        model.addAttribute("activeGatherings", activeGatherings);
+        model.addAttribute("allOrgs", allOrgs);
+        return "home/orgOverview";
+    }
+
+    @GetMapping("/contact")
+    public String contact(){
+        return "home/contact";
+    }
+
+    @PostMapping("/contactForm")
+    public String contactForm(@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String message, Model model){
+        //email send placeholder
+        return "home/messageSent";
+    }
+
+    @RequestMapping("/orgDetails/{orgId}")
+    public String orgDetails(@PathVariable Long orgId, Model model){
+        User org = (User)userService.findById(orgId);
+        if(org!=null && org.isOrg()==true){
+            List<Gathering> allGatherings = gatheringService.findAll();
+            List<User> allOrgs = userService.findOrg(true);
+            List<Gathering> activeGatherings = new ArrayList<>();
+            Date date = new Date();
+            for(Gathering g: allGatherings){
+                if(g.getDate().after(date)){
+                    activeGatherings.add(g);
+                }
+            }
+            long receivedNum = offerService.countByOrgAndSentAndReceived(orgId,true, true);
+            long sentNum = offerService.countByOrgAndSentAndReceived(orgId, true, false);
+            long newNum = offerService.countByOrgAndSentAndReceived(orgId, false, false);
+            model.addAttribute("receivedNum", receivedNum);
+            model.addAttribute("sentNum", sentNum);
+            model.addAttribute("newNum", newNum);
+            model.addAttribute("activeGatherings", activeGatherings);
+            model.addAttribute("allOrgs", allOrgs);
+            model.addAttribute("org", org);
+            return "home/orgDetails";
+        } else{
+            return "redirect:/403";
+        }
+    }
+
+    @RequestMapping("/gatheringDetails/{gatheringId}")
+    public String gatheringDetails(@PathVariable Long gatheringId, Model model){
+        Gathering gathering = (Gathering) gatheringService.findById(gatheringId);
+        Date date = new Date();
+        if(gathering!=null && gathering.getDate().after(date)){
+            List<Gathering> allGatherings = gatheringService.findAll();
+            List<User> allOrgs = userService.findOrg(true);
+            List<Gathering> activeGatherings = new ArrayList<>();
+            for(Gathering g: allGatherings){
+                if(g.getDate().after(date)){
+                    activeGatherings.add(g);
+                }
+            }
+            model.addAttribute("activeGatherings", activeGatherings);
+            model.addAttribute("allOrgs", allOrgs);
+            model.addAttribute("gathering", gathering);
+            return "home/gatheringDetails";
+        } else{
+            return "redirect:/403";
+        }
+    }
+
 }
