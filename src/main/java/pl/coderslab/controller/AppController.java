@@ -7,15 +7,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.coderslab.comparators.LocationComparator;
 import pl.coderslab.model.*;
 import pl.coderslab.service.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -69,17 +67,15 @@ public class AppController {
         model.addAttribute("supportedOrgsNum", supportedOrgs.size());
         model.addAttribute("bagsNum", bagsNum);
         model.addAttribute("gatheringsNum",gatheringsNum);
+        model.addAttribute("user",user);
         return "app/dashboard";
     }
 
 
     @GetMapping("/createGiveAway")
-    public String giveAwayForm(@AuthenticationPrincipal CurrentUser customUser, Model model){
-        User loggedUser = customUser.getUser();
-        User user = (User)userService.findById(loggedUser.getId());
+    public String giveAwayForm(Model model){
         List<Goods> goods = goodsService.findAll();
         List<Receiver> receivers = receiverService.findAll();
-
         List<User> orgs = userService.findOrg(true);
         List<Location> activeCities = new ArrayList<>();
         for(User u: orgs){
@@ -87,14 +83,13 @@ public class AppController {
         }
         if(activeCities.size()>0){
             activeCities =  activeCities.stream()
-                    .distinct()// sortowanie po nazwie miast!
+                    .distinct()
                     .collect(Collectors.toList());
-
+            Collections.sort(activeCities, new LocationComparator());
         }
 
         model.addAttribute("locations", activeCities);
         model.addAttribute("goods",goods);
-        model.addAttribute("user",user);
         model.addAttribute("receivers",receivers);
         model.addAttribute("offer",new Offer());
         return "app/giveAwayForm";
@@ -103,6 +98,33 @@ public class AppController {
 
     @PostMapping("/createGiveAway")
     public String giveAwayAdded(@ModelAttribute Offer offer, Model model, @AuthenticationPrincipal CurrentUser customUser, @RequestParam Long locationId){
+        if(offer.getGoods().size()==0 || offer.getReceivers().size()==0){
+            if(offer.getGoods().size()==0){
+                model.addAttribute("emptyGoods",true);
+            }
+            if(offer.getReceivers().size()==0){
+                model.addAttribute("emptyReceivers",true);
+            }
+            List<Goods> goods = goodsService.findAll();
+            List<Receiver> receivers = receiverService.findAll();
+            List<User> orgs = userService.findOrg(true);
+            List<Location> activeCities = new ArrayList<>();
+            for(User u: orgs){
+                activeCities.add(u.getLocation());
+            }
+            if(activeCities.size()>0){
+                activeCities =  activeCities.stream()
+                        .distinct()
+                        .collect(Collectors.toList());
+                Collections.sort(activeCities, new LocationComparator());
+            }
+            Collections.sort(activeCities, new LocationComparator());
+            model.addAttribute("locations", activeCities);
+            model.addAttribute("goods",goods);
+            model.addAttribute("receivers",receivers);
+            model.addAttribute("offer",offer);
+            return "app/giveAwayForm";
+        }
         User loggedUser = customUser.getUser();
         User user = (User)userService.findById(loggedUser.getId());
         offer.setUser(user);
@@ -119,9 +141,9 @@ public class AppController {
                filteredOrgs.add(o);
            }
         }
-
         model.addAttribute("filteredOrgs",filteredOrgs);
         model.addAttribute("newOffer",offer);
+        model.addAttribute("location",pickedCity);
         return "app/giveAwayForm2";
     }
 
@@ -151,7 +173,6 @@ public class AppController {
     public String confirmedGiveAway(HttpSession session){
         Offer sessionOffer = (Offer) session.getAttribute("newOffer");
         offerService.save(sessionOffer);
-        //session.removeAttribute("newOffer");
         return "app/giveAwayConfirm";
     }
 

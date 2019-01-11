@@ -2,177 +2,89 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Document</title>
-    <link rel="stylesheet" href="/resources/css/style.css" />
-</head>
-<body>
-<header class="header--form-page">
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li class="logged-user">
-                Witaj Agata
-                <ul class="dropdown">
-                    <li><a href="#">Profil</a></li>
-                    <li><a href="#">Ustawienia</a></li>
-                    <li><a href="#">Moje zbiórki</a></li>
-                    <li><a href="#">Wyloguj</a></li>
-                </ul>
-            </li>
-        </ul>
-
-        <ul>
-            <li><a href="#" class="btn btn--without-border active">Start</a></li>
-            <li><a href="#" class="btn btn--without-border">O co chodzi?</a></li>
-            <li><a href="#" class="btn btn--without-border">O nas</a></li>
-            <li>
-                <a href="#" class="btn btn--without-border"
-                >Fundacje i organizacje</a
-                >
-            </li>
-            <li><a href="#" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
-    </nav>
-
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Oddaj rzeczy, których już nie chcesz<br />
-                <span class="uppercase">potrzebującym</span>
-            </h1>
-
-            <div class="slogan--steps">
-                <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
-                <ul class="slogan--steps-boxes">
-                    <li>
-                        <div><em>1</em><span>Wybierz rzeczy</span></div>
-                    </li>
-                    <li>
-                        <div><em>2</em><span>Spakuj je w worki</span></div>
-                    </li>
-                    <li>
-                        <div><em>3</em><span>Wybierz fundację</span></div>
-                    </li>
-                    <li>
-                        <div><em>4</em><span>Zamów kuriera</span></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
+<jsp:include page="formHeader.jsp"/>
 
 
 
 
-    <section>
-        <div>
-            <form:form method="post" modelAttribute="offer">
-                <div>
-                    <h3>Zaznacz co chcesz oddać:</h3>
+<section class="help" id="help">
+    <h2>Wybierz co i komu chcesz przekazać</h2>
+    <ul class="help--buttons">
+        <li data-id="1"><a href="#" class="btn btn--without-border active">Rzeczy i potrzebujący</a></li>
+        <li data-id="2"><a href="#" class="btn btn--without-border">Liczba worków</a></li>
+        <li data-id="3"><a href="#" class="btn btn--without-border">Wybór miasta</a></li>
+    </ul>
+    <form:form method="post" modelAttribute="offer">
 
-                    <c:forEach var="good" items="${goods}">
-                        <div >
-                            <label>
+        <!-- SLIDE 1 -->
+        <div class="help--slides active" data-id="1">
+
+            <ul class="help--slides-items">
+                <li>
+                    <div class="col">
+                        <div class="title">
+                            Wybierz potrzebujących:
+                        </div>
+                        <c:forEach items="${receivers}" var="receiver">
+                            <div class="title">
+                                <form:checkbox path="receivers"
+                                               value="${receiver.id}"/>
+                                    ${receiver.name}
+                            </div>
+                        </c:forEach>
+                        <c:if test="${emptyReceivers}">
+                            <div class="error">Nie wybrano żadnej opcji</div>
+                        </c:if>
+                    </div>
+                    <div class="col">
+                        <div class="title">
+                            Wybierz przedmioty:
+                        </div>
+                        <c:forEach items="${goods}" var="good">
+                            <div class="title">
                                 <form:checkbox path="goods"
                                                value="${good.id}"/>
                                     ${good.name}
-                            </label>
-                        </div>
-                    </c:forEach>
-
-                </div>
-
-                <h3>Adresaci:</h3>
-                <c:forEach var="receiver" items="${receivers}">
-                    <div >
-                        <label>
-                            <form:checkbox path="receivers"
-                                           value="${receiver.id}"/>
-                                ${receiver.name}
-                        </label>
+                            </div>
+                        </c:forEach>
+                        <c:if test="${emptyGoods}">
+                            <div class="error">Nie wybrano żadnej opcji</div>
+                        </c:if>
                     </div>
-                </c:forEach>
+                </li>
+            </ul>
 
-                <div >
-                    <h3>Podaj liczbę 60l worków, w które spakowałeś/aś rzeczy:</h3>
+        </div>
 
-                    <div >
-                        <label>
-                            Liczba 60l worków:
-                            <form:input path="bagNum" type="number" step="1" min="1" required="true" />
-                            <form:errors path="bagNum"/>
-                        </label>
-                    </div>
+        <!-- SLIDE 2 -->
+        <div class="help--slides" data-id="2">
+            <h2>Podaj ilość 60l worków do przekazania:</h2>
+            <ul class="help--slides-items">
+                <li>
+                    <form:input path="bagNum" type="number" step="1" min="1" required="true"/>
+                    <form:errors path="bagNum"/>
+                </li>
+            </ul>
 
-                </div>
+        </div>
 
-
-                <h3>Lokalizacja:</h3>
-                <div>
+        <!-- SLIDE 3 -->
+        <div class="help--slides" data-id="3">
+            <h2>Wybierz docelowe miasto wysyłki:</h2>
+            <ul class="help--slides-items">
+                <li>
                     <select name="locationId">
                         <c:forEach var="city" items="${locations}">
                             <option value="${city.id}">${city.name}</option>
                         </c:forEach>
                     </select>
-                </div>
-
-                <button type="submit" class="btn">Dalej</button>
-            </form:form>
-
-
-
+                </li>
+                <li>
+                    <button type="submit" class="btn">Dalej</button>
+                </li>
+            </ul>
         </div>
-    </section>
+    </form:form>
+</section>
 
-
-
-
-
-
-
-<footer>
-    <div class="contact">
-        <h2>Skontaktuj się z nami</h2>
-        <h3>Formularz kontaktowy</h3>
-        <form class="form--contact">
-            <div class="form-group form-group--50">
-                <input type="text" name="name" placeholder="Imię" />
-            </div>
-            <div class="form-group form-group--50">
-                <input type="text" name="surname" placeholder="Nazwisko" />
-            </div>
-
-            <div class="form-group">
-            <textarea
-                    name="message"
-                    placeholder="Wiadomość"
-                    rows="1"
-            ></textarea>
-            </div>
-
-            <button class="btn" type="submit">Wyślij</button>
-        </form>
-    </div>
-    <div class="bottom-line">
-        <span class="bottom-line--copy">Copyright &copy; 2018</span>
-        <div class="bottom-line--icons">
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-facebook.svg"
-            /></a>
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-instagram.svg"
-            /></a>
-        </div>
-    </div>
-</footer>
-
-<script src="/resources/js/app.js"></script>
-</body>
-</html>
+<jsp:include page="appFooter.jsp"/>

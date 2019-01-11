@@ -5,8 +5,8 @@
 
 
 <section class="login-page">
-    <h2>Rejestracja przebiegła pomyślnie</h2>
-    <div class="form-group">Na Twój adres email wysłaliśmy link aktywacyjny. Użyj go by aktywować swoje konto.</div>
+    <h2>Twoja wiadomość została pomyślnie wysłana</h2>
+    <div class="form-group"><h3>Na Twój adres email wysłaliśmy kopię wiadomości. Jeden z naszych administratorów wkrótce Ci odpowie.</h3></div>
 </section>
 
 <jsp:include page="homeFooter.jsp"/>
