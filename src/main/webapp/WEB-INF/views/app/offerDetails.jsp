@@ -2,136 +2,50 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Document</title>
-    <link rel="stylesheet" href="/resources/css/style.css"/>
-</head>
-<body>
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li class="highlighted">
-                <form action="/login" method="get" id="loginForm">
-                    <input type="submit" value="Zaloguj" class="btn btn--small">
-                </form>
-            </li>
-            <li class="highlighted">
-                <form action="/logout" method="post" id="logoutForm">
-                    <input type="hidden" name="${_csrf.parameterName}"
-                           value="${_csrf.token}"/>
-                    <input type="submit" value="Wyloguj" class="btn btn--small">
-                </form>
-            </li>
-        </ul>
-
-        <ul>
-            <li><a href="#">Start</a></li>
-            <li><a href="#">O co chodzi?</a></li>
-            <li><a href="#">O nas</a></li>
-            <li><a href="#">Fundacje i organizacje</a></li>
-            <li><a href="#">Kontakt</a></li>
-        </ul>
-        <ul class="slogan--buttons">
-            <li><a href="/app/createGiveAway" class="btn btn--highlighted">Oddaj rzeczy</a></li>
-            <li><a href="/app/addGathering" class="btn btn--highlighted">Zorganizuj zbiórkę</a></li>
-            <li><a href="/app/editUser" class="btn">Edytuj profil</a></li>
-            <li><a href="/app/userOffers" class="btn">Przekazane datki</a></li>
-            <li><a href="/app/userGatherings" class="btn">Organizowane zbiórki</a></li>
-        </ul>
-    </nav>
-</header>
+<jsp:include page="appHeader.jsp"/>
 
 <section class="login-page">
     <h2>Szczegóły datku</h2>
 </section>
 
-<section class="stats">
-    <div class="container ">
 
-        <div class="stats--item">
-            <em>Przekazywane przedmioty:</em>
-            <h3><ul>
-                <c:forEach var="good" items="${offer.goods}">
-                    <li>${good.name}, ${notSentOffer.institution.name}</li>
-                </c:forEach>
-            </ul></h3>
-
-        </div>
-
-        <div class="stats--item">
-            <em>Instytucja odbiorcza:</em>
-            <h3><ul>
-                <li>${offer.institution.name}</li>
-                <li>${offer.institution.description}</li>
-            </ul></h3>
-
-        </div>
-
-        <div class="stats--item">
-            <em>Dane dla kuriera:</em>
-            <h3><ul>
-                <li>${offer.street}</li>
-                <li>${offer.city}</li>
-                <li>${offer.postalCode}</li>
-                <li>${offer.telephone}</li>
-                <li>${offer.date}</li>
-                <li>${offer.additionalInstructions}</li>
-            </ul></h3>
-
-        </div>
-        <c:if test="${offer.user.id == user.id}">
-            <div class="stats--item">
-                <em>Zmiana statusu:</em>
-                <h3><ul>
-                    <a href="/app/sentOffer/${offer.id}" class="btn btn--highlighted">Zmiana statusu</a>
-                </ul></h3>
-
-            </div>
-        </c:if>
-
+<section class="help" id="help">
+    <div class="help--slides active" >
+        <ul class="help--slides-items">
+            <li>
+                <div class="col">
+                    <div class="title">Oddawane przedmioty:</div>
+                    <c:forEach items="${offer.goods}" var="good">
+                        <div class="text">${good.name}</div>
+                    </c:forEach>
+                </div>
+                <div class="col">
+                    <div class="title">Potrzebujący:</div>
+                    <c:forEach items="${offer.receivers}" var="receiver">
+                        <div class="text">${receiver.name}</div>
+                    </c:forEach>
+                </div>
+                <div class="col">
+                    <div class="title">Dane do wysyłki:</div>
+                    <div class="text">Adres: ${offer.street}</div>
+                    <div class="text">Miasto: ${offer.city}</div>
+                    <div class="text">Kod pocztowy: ${offer.postalCode}</div>
+                    <div class="text">Telefon: ${offer.telephone}</div>
+                    <div class="text">Data wysyłki: ${offer.date}</div>
+                    <div class="text">Instrukcje dla kuriera: ${offer.additionalInstructions}</div>
+                </div>
+                <c:if test="${offer.user.id == user.id}">
+                    <c:if test="${not offer.sent}">
+                        <div class="col">
+                            <div class="title">
+                                <a href="/app/sentOffer/${offer.id}" class="btn">Oznacz jako wysłane</a>
+                            </div>
+                        </div>
+                    </c:if>
+                </c:if>
+            </li>
+        </ul>
     </div>
 </section>
+<jsp:include page="appFooter.jsp"/>
 
-
-<footer>
-    <div class="contact">
-        <h2>Skontaktuj się z nami</h2>
-        <h3>Formularz kontaktowy</h3>
-        <form>
-            <div class="form-group form-group--50">
-                <input type="text" name="name" placeholder="Imię"/>
-            </div>
-            <div class="form-group form-group--50">
-                <input type="text" name="surname" placeholder="Nazwisko"/>
-            </div>
-
-            <div class="form-group">
-            <textarea
-                    name="message"
-                    placeholder="Wiadomość"
-                    rows="1"
-            ></textarea>
-            </div>
-
-            <button class="btn" type="submit">Wyślij</button>
-        </form>
-    </div>
-    <div class="bottom-line">
-        <span class="bottom-line--copy">Copyright &copy; 2018</span>
-        <div class="bottom-line--icons">
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-facebook.svg"
-            /></a>
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-instagram.svg"
-            /></a>
-        </div>
-    </div>
-</footer>
-</body>
-</html>

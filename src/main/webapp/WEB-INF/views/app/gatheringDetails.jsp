@@ -2,127 +2,40 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <title>Document</title>
-    <link rel="stylesheet" href="/resources/css/style.css"/>
-</head>
-<body>
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li class="highlighted">
-                <form action="/login" method="get" id="loginForm">
-                    <input type="submit" value="Zaloguj" class="btn btn--small">
-                </form>
-            </li>
-            <li class="highlighted">
-                <form action="/logout" method="post" id="logoutForm">
-                    <input type="hidden" name="${_csrf.parameterName}"
-                           value="${_csrf.token}"/>
-                    <input type="submit" value="Wyloguj" class="btn btn--small">
-                </form>
-            </li>
-        </ul>
-
-        <ul>
-            <li><a href="#">Start</a></li>
-            <li><a href="#">O co chodzi?</a></li>
-            <li><a href="#">O nas</a></li>
-            <li><a href="#">Fundacje i organizacje</a></li>
-            <li><a href="#">Kontakt</a></li>
-        </ul>
-        <ul class="slogan--buttons">
-            <li><a href="/app/createGiveAway" class="btn btn--highlighted">Oddaj rzeczy</a></li>
-            <li><a href="/app/addGathering" class="btn btn--highlighted">Zorganizuj zbiórkę</a></li>
-            <li><a href="/app/editUser" class="btn">Edytuj profil</a></li>
-            <li><a href="/app/userOffers" class="btn">Przekazane datki</a></li>
-            <li><a href="/app/userGatherings" class="btn">Organizowane zbiórki</a></li>
-        </ul>
-    </nav>
-</header>
+<jsp:include page="appHeader.jsp"/>
 
 <section class="login-page">
-    <h2>Szczegóły datku</h2>
+    <h2>Szczegóły zbiórki</h2>
 </section>
 
-<section class="stats">
-    <div class="container ">
-
-        <div class="stats--item">
-            <em>Zbierane przedmioty:</em>
-            <h3><ul>
-                <c:forEach var="good" items="${gathering.goods}">
-                    <li>${good.name}</li>
-                </c:forEach>
-            </ul></h3>
-
-        </div>
-
-        <div class="stats--item">
-            <em>Potrzebujący:</em>
-            <h3><ul>
-                <c:forEach var="receiver" items="${gathering.receivers}">
-                    <li>${receiver.name}</li>
-                </c:forEach>
-            </ul></h3>
-
-        </div>
-
-        <div class="stats--item">
-            <em>Dane:</em>
-            <h3><ul>
-                <li>${gathering.street}</li>
-                <li>${gathering.city}</li>
-                <li>${gathering.postalCode}</li>
-                <li>${gathering.telephone}</li>
-                <li>${gathering.date}</li>
-                <li>${gathering.description}</li>
-            </ul></h3>
-        </div>
-
+<section class="help" id="help">
+    <div class="help--slides active" >
+        <ul class="help--slides-items">
+            <li>
+                <div class="col">
+                    <div class="title">Zbierane przedmioty:</div>
+                    <c:forEach items="${gathering.goods}" var="good">
+                        <div class="text">${good.name}</div>
+                    </c:forEach>
+                </div>
+                <div class="col">
+                    <div class="title">Potrzebujący:</div>
+                    <c:forEach items="${gathering.receivers}" var="receiver">
+                        <div class="text">${receiver.name}</div>
+                    </c:forEach>
+                </div>
+                <div class="col">
+                    <div class="title">Dane organizacyjne:</div>
+                    <div class="text">Adres: ${gathering.street}</div>
+                    <div class="text">Miasto: ${gathering.city}</div>
+                    <div class="text">Kod pocztowy: ${gathering.postalCode}</div>
+                    <div class="text">Telefon: ${gathering.telephone}</div>
+                    <div class="text">Data: ${gathering.date}</div>
+                    <div class="text">Opis zbiórki: ${gathering.description}</div>
+                </div>
+            </li>
+        </ul>
     </div>
 </section>
 
-
-<footer>
-    <div class="contact">
-        <h2>Skontaktuj się z nami</h2>
-        <h3>Formularz kontaktowy</h3>
-        <form>
-            <div class="form-group form-group--50">
-                <input type="text" name="name" placeholder="Imię"/>
-            </div>
-            <div class="form-group form-group--50">
-                <input type="text" name="surname" placeholder="Nazwisko"/>
-            </div>
-
-            <div class="form-group">
-            <textarea
-                    name="message"
-                    placeholder="Wiadomość"
-                    rows="1"
-            ></textarea>
-            </div>
-
-            <button class="btn" type="submit">Wyślij</button>
-        </form>
-    </div>
-    <div class="bottom-line">
-        <span class="bottom-line--copy">Copyright &copy; 2018</span>
-        <div class="bottom-line--icons">
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-facebook.svg"
-            /></a>
-            <a href="#" class="btn btn--small"
-            ><img src="/resources/images/icon-instagram.svg"
-            /></a>
-        </div>
-    </div>
-</footer>
-</body>
-</html>
+<jsp:include page="appFooter.jsp"/>

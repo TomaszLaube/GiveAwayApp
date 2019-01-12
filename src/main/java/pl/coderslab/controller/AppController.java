@@ -157,14 +157,14 @@ public class AppController {
     }
 
     @PostMapping("/createGiveAwayThird")
-    public String deliveryData(HttpSession session, @ModelAttribute @Valid Offer newOffer, BindingResult result, Model model){
+    public String deliveryData(@ModelAttribute @Valid Offer newOffer, BindingResult result, Model model, HttpSession session){
+        Offer offer = (Offer)session.getAttribute("newOffer");
+        newOffer.setGoods(offer.getGoods());
+        newOffer.setReceivers(offer.getReceivers());
         if(result.hasErrors()){
             model.addAttribute("newOffer", newOffer);
             return "app/giveAwayForm3";
         }
-        Offer sessionOffer = (Offer) session.getAttribute("newOffer");
-        newOffer.setGoods(sessionOffer.getGoods());
-        newOffer.setReceivers(sessionOffer.getReceivers());
         model.addAttribute("newOffer", newOffer);
         return "app/giveAwayForm4";
     }
@@ -235,10 +235,14 @@ public class AppController {
 
     @PostMapping("/addGathering")
     public String addedGathering(@ModelAttribute @Valid Gathering gathering, BindingResult result, Model model, @AuthenticationPrincipal CurrentUser customUser){
-        if(result.hasErrors()){
+        if(result.hasErrors() || gathering.getGoods().size()==0 || gathering.getReceivers().size()==0){
+            if(gathering.getReceivers().size()==0){
+                model.addAttribute("emptyReceivers",true);
+            } if(gathering.getGoods().size()==0){
+                model.addAttribute("emptyGoods",true);
+            }
             List<Receiver> receivers = receiverService.findAll();
             List<Goods> goods = goodsService.findAll();
-
             model.addAttribute("receivers", receivers);
             model.addAttribute("goods", goods);
             model.addAttribute("gathering", gathering);
@@ -248,7 +252,7 @@ public class AppController {
         User user = (User) userService.findById(loggedUser.getId());
         gathering.setUser(user);
         gatheringService.save(gathering);
-        return "redirect:/app/dashboard";
+        return "app/gatheringConfirm";
     }
 
     @RequestMapping("/userOffers")

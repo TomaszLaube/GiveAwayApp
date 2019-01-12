@@ -5,7 +5,8 @@
 
 <jsp:include page="formHeader.jsp"/>
 
-
+<%--
+--%>
 <section class="help" id="help">
     <h2>Dotychczasowe kryteria przekazania datku:</h2>
     <div>
@@ -71,8 +72,7 @@
                         </div>
                     </div>
                     <div class="col">
-                        <div class="text">Numer telefonu:
-                            <form:errors path="telephone"/></div>
+                        <div class="text">Numer telefonu:</div>
                         <div class="title">
                             <form:input path="telephone" placeholder="Numer telefonu" required="true"/>
                             <form:errors path="telephone"/>
@@ -109,72 +109,7 @@
 </section>
 
 
-<%--
-<section>
-    <div>
-        <form:form method="post" action="/app/createGiveAwayThird" modelAttribute="newOffer">
 
-            <div>
-                <h3>Podaj dane do wysyłki:</h3>
-
-                <div >
-                    <label>
-                        Miasto:
-                        <form:input path="city" placeholder="Miasto" required="true" />
-                        <form:errors path="city"/>
-                    </label>
-                </div>
-
-                <div >
-                    <label>
-                        Adres:
-                        <form:input path="street" placeholder="Adres" required="true" />
-                        <form:errors path="street"/>
-                    </label>
-                </div>
-
-                <div >
-                    <label>
-                        Kod pocztowy:
-                        <form:input path="postalCode" placeholder="Kod pocztowy" required="true" />
-                        <form:errors path="postalCode"/>
-                    </label>
-                </div>
-                <div >
-                    <label>
-                        Numer telefonu:
-                        <form:input path="telephone" placeholder="Numer telefonu" required="true" />
-                        <form:errors path="telephone"/>
-                    </label>
-                </div>
-                <div >
-                    <label>
-                        Data odbioru:
-                        <form:input path="date" type="date" placeholder="Data" required="true" />
-                        <form:errors path="date"/>
-                    </label>
-                </div>
-
-                <div >
-                    <label>
-                        Instrukcje dla kuriera:
-                        <form:textarea path="additionalInstructions" placeholder="Instrukcje dla kuriera" required="true" />
-                        <form:errors path="additionalInstructions"/>
-                    </label>
-                </div>
-
-            </div>
-            <form:hidden path="institution" value="${newOffer.institution.id}"/>
-            <form:hidden path="user" value="${newOffer.user.id}"/>
-            <form:hidden path="bagNum" value="${newOffer.bagNum}"/>
-            <button type="submit" class="btn">Dalej</button>
-        </form:form>
-
-
-
-    </div>
-</section>
---%>
 
 
 <jsp:include page="appFooter.jsp"/>

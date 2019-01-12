@@ -38,39 +38,40 @@
             </li>
         </ul>
     </div>
-
-    <h2>Wybierz organizację która odbierze Twoje datki:</h2>
-
-
-    <form method="post" action="/app/createGiveAwaySecond">
-        <div>
-            <ul class="help--slides-items">
-                <c:forEach var="org" items="${filteredOrgs}">
+    
+    <c:if test="${not empty filteredOrgs}">
+        <h2>Wybierz organizację która odbierze Twoje datki:</h2>
+        <form method="post" action="/app/createGiveAwaySecond">
+            <div>
+                <ul class="help--slides-items">
+                    <c:forEach var="org" items="${filteredOrgs}">
+                        <li>
+                            <div class="col">
+                                <div class="title">
+                                    <input type="radio" required value="${org.id}" name="orgId">
+                                    Organizacja "${org.name}"
+                                </div>
+                                <div class="text">
+                                    Cel i misja: ${org.description}
+                                </div>
+                            </div>
+                        </li>
+                    </c:forEach>
                     <li>
-                        <div class="col">
-                            <div class="title">
-                                <input type="radio" required value="${org.id}" name="orgId">
-                                Organizacja "${org.name}"
-                            </div>
-                            <div class="text">
-                                Cel i misja: ${org.description}
-                            </div>
-                        </div>
-                    </li>
-                </c:forEach>
-                <li>
                         <input type="hidden" name="${_csrf.parameterName}"
                                value="${_csrf.token}"/>
                         <button type="submit" class="btn">Dalej</button>
-                </li>
-            </ul>
-        </div>
-        <div>
-
-        </div>
-    </form>
-
-
+                    </li>
+                </ul>
+            </div>
+            <div>
+            </div>
+        </form>
+    </c:if>
+    <c:if test="${empty filteredOrgs}">
+        <h2>Nie udało się odnaleźć organizacji, która spełnia wybrane kryteria.<br>Spróbuj jeszcze raz.</h2>
+        <a href="/app/createGiveAway" class="btn"></a>
+    </c:if>
 </section>
 
 

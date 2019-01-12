@@ -6,7 +6,7 @@
 <jsp:include page="appHeader.jsp"/>
 <section>
     <div>
-        <h2>Nowy datek utworzony pomyślnie</h2>
+        <h2>Nowa zbiórka utworzona pomyślnie</h2>
     </div>
 </section>
 <jsp:include page="appFooter.jsp"/>

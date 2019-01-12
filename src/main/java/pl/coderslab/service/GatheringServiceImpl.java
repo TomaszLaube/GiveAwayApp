@@ -41,7 +41,7 @@ public class GatheringServiceImpl implements GatheringService<Gathering> {
 
     @Override
     public List<Gathering> findUserGatherings(Long userId, boolean active) {
-        return gatheringRepository.findByUserIdAndActiveOrderByDateDesc(userId, active);
+        return gatheringRepository.findByUserIdAndActiveOrderByDateAsc(userId, active);
     }
 
     @Override

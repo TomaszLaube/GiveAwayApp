@@ -34,7 +34,6 @@ public class Gathering {
     private String postalCode;
 
     @NotBlank
-    @Size(min = 9, max = 9)
     @Pattern(regexp = "^[0-9]{9}$", message = "Numer telefonu musi się składać z 9 cyfr")
     private String telephone;
 
