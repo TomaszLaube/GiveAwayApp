@@ -7,7 +7,6 @@
 <section class="login-page">
     <h2>Zorganizuj zbiórkę</h2>
     <form:form method="post" modelAttribute="gathering">
-
         <div>
             <ul class="help--slides-items">
                 <li>
@@ -97,9 +96,6 @@
                     </div>
                 </li>
             </ul>
-
-
-
         </div>
     </form:form>
 </section>
