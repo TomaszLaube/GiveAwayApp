@@ -6,14 +6,14 @@
 
 
 <section class="help" id="help">
-    <h2>Szczegółowe dane organizacji o ID: ${org.id}</h2>
+    <h2>Szczegółowe dane użytkownika o ID: ${user.id}</h2>
     <div class="help--slides active">
         <ul class="help--slides-items">
 
             <li>
                 <div class="col">
                     <div class="title">
-                        ${org.email}
+                        ${user.email}
                     </div>
                     <div class="text">
                         Adres email
@@ -21,17 +21,17 @@
                 </div>
                 <div class="col">
                     <div class="title">
-                        ${org.name}
+                        ${user.firstName} ${user.lastName}
                     </div>
                     <div class="text">
-                        Nazwa
+                        Imię i nazwisko
                     </div>
                 </div>
             </li>
             <li>
                 <div class="col">
                     <div class="title">
-                        <c:forEach var="role" items="${org.roles}">
+                        <c:forEach var="role" items="${user.roles}">
                             ${role.name}
                         </c:forEach>
                     </div>
@@ -41,10 +41,10 @@
                 </div>
                 <div class="col">
                     <div class="title">
-                        <c:if test="${org.enabled==true}">
+                        <c:if test="${user.enabled==true}">
                             Przyznany
                         </c:if>
-                        <c:if test="${org.enabled==false}">
+                        <c:if test="${user.enabled==false}">
                             Odebrany
                         </c:if>
                     </div>
@@ -56,49 +56,41 @@
             <li>
                 <div class="col">
                     <div class="title">
-                        <c:if test="${org.validated==true}">
+                        <c:if test="${user.validated==true}">
                             Zakończony
                         </c:if>
-                        <c:if test="${org.validated==false}">
+                        <c:if test="${user.validated==false}">
                             Niezakończony
                         </c:if>
                     </div>
                     <div class="text">Status walidacji konta</div>
                 </div>
                 <div class="col">
-                    <div class="title">
-                        <c:if test="${org.org==true}">OK</c:if>
-                        <c:if test="${org.org==false}">BŁĄÐ</c:if>
+                    <div class="title"></div>
+                    <div class="text"></div>
+                </div>
+            </li>
+            <li>
+                <div class="col">
+                    <div class="title">Lista datków</div>
+                    <div class="text">
+                        <c:forEach var="offer" items="${user.offers}">
+                            <a href="/admin/offerDetails/${offer.id}" class="btn">${offer.date} ${offer.institution.name}</a><br>
+                        </c:forEach>
                     </div>
-                    <div class="text">Flaga organizacji</div>
-                </div>
-            </li>
-            <li>
-                <div class="col">
-                    <div class="title">${org.location.name}</div>
-                    <div class="text">Lokalizacja</div>
                 </div>
                 <div class="col">
-                    <div class="title">Cel i misja</div>
-                    <div class="text">${org.description}</div>
-                </div>
-            </li>
-            <li>
-                <div class="col">
-                    <div class="title">Przyjmowane datki</div>
-                    <c:forEach var="good" items="${org.orgGoods}">
-                        <div class="text">${good.name}</div>
-                    </c:forEach>
-                </div>
-                <div class="col">
-                    <div class="title">Wspierane osoby</div>
-                    <c:forEach var="receiver" items="${org.orgReceivers}">
-                        <div class="text">${receiver.name}</div>
-                    </c:forEach>
+                    <div class="title">Lista zbiórek</div>
+                    <div class="text">
+                        <c:forEach items="${user.gatherings}" var="gathering">
+                            <a href="/gatheringDetails/${gathering.id}" class="btn">${gathering.date} ${gathering.city}</a><br>
+                        </c:forEach>
+                    </div>
                 </div>
             </li>
         </ul>
     </div>
 </section>
+
 
 <jsp:include page="adminFooter.jsp"/>
