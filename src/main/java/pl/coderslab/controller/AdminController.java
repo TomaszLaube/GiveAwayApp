@@ -41,6 +41,9 @@ public class AdminController {
     @Autowired
     OfferService offerService;
 
+    @Autowired
+    UuidService uuidService;
+
 
     @RequestMapping("/dashboard")
     public String adminDashboard(@AuthenticationPrincipal CurrentUser customUser, Model model) {
@@ -89,6 +92,9 @@ public class AdminController {
             return "app/addAdmin";
         } else {
             userService.saveAdmin(admin);
+            UUID userUUID = new UUID();
+            userUUID.setUser(admin);
+            uuidService.save(userUUID);
             return "redirect:/admin/adminList";
         }
     }
@@ -361,6 +367,9 @@ public class AdminController {
             return "admin/addOrg";
         }  else {
             userService.saveOrgByAdmin(org);
+            UUID userUUID = new UUID();
+            userUUID.setUser(org);
+            uuidService.save(userUUID);
             return "redirect:/admin/orgList";
         }
     }
@@ -418,6 +427,9 @@ public class AdminController {
             return "admin/addUser";
         } else {
             userService.saveUserByAdmin(user);
+            UUID userUUID = new UUID();
+            userUUID.setUser(user);
+            uuidService.save(userUUID);
             return "home/registrationComplete";
         }
     }

@@ -53,8 +53,6 @@ public class User {
 
     private boolean org;
 
-    @OneToOne
-    private pl.coderslab.model.UUID uuid;
 
     @ManyToMany
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -172,13 +170,6 @@ public class User {
         this.org = org;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
 
     public Set<Role> getRoles() {
         return roles;

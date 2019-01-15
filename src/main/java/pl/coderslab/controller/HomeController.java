@@ -39,6 +39,9 @@ public class HomeController {
     @Autowired
     GatheringService gatheringService;
 
+    @Autowired
+    UuidService uuidService;
+
     @RequestMapping("/")
     public String home(Model model){
         List<Offer> allOffers = offerService.findAll();
@@ -92,7 +95,11 @@ public class HomeController {
             return "home/registration";
         }
         else {
+
             userService.saveUser(user);
+            pl.coderslab.model.UUID userUUID = new pl.coderslab.model.UUID();
+            userUUID.setUser(user);
+            uuidService.save(userUUID);
             return "home/registrationComplete";
         }
     }
@@ -138,6 +145,9 @@ public class HomeController {
         }
         else {
             userService.saveOrg(user);
+            pl.coderslab.model.UUID userUUID = new pl.coderslab.model.UUID();
+            userUUID.setUser(user);
+            uuidService.save(userUUID);
             return "home/registrationComplete";
         }
     }

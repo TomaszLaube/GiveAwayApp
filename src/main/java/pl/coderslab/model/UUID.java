@@ -25,6 +25,10 @@ public class UUID {
 
     private Timestamp pwdExpiry;
 
+    @OneToOne
+    @NotNull
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -63,5 +67,13 @@ public class UUID {
 
     public void setPwdExpiry(Timestamp pwdExpiry) {
         this.pwdExpiry = pwdExpiry;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

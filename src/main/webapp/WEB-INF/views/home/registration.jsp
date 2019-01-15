@@ -11,7 +11,7 @@
             <form:input path="email" placeholder="Email" required="true"/>
             <form:errors path="email" element="div"/>
             <c:if test="${emailExists}">
-                <div class="error">Ten adres email jest już zajęty</div>
+                <div class="notification">Ten adres email jest już zajęty</div>
             </c:if>
         </div>
 
@@ -34,7 +34,7 @@
             <form:input path="checkPassword" type="password" placeholder="Powtórz hasło" required="true"/>
             <form:errors path="checkPassword" element="div"/>
             <c:if test="${incorrectPasswordCheck}">
-                <div class="error">Powtórz poprawnie hasło</div>
+                <div class="notification">Powtórz poprawnie hasło</div>
             </c:if>
         </div>
 

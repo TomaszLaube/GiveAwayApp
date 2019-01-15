@@ -129,10 +129,10 @@
                         <div class="title">
                             <form:input path="checkPassword" type="password" placeholder="Powtórz hasło" required="true"/>
                             <form:errors path="checkPassword" element="div"/>
-                            <c:if test="${incorrectPasswordCheck}">
-                                <div class="notification">Powtórz poprawnie hasło</div>
-                            </c:if>
                         </div>
+                        <c:if test="${incorrectPasswordCheck}">
+                            <div class="notification">Powtórz poprawnie hasło</div>
+                        </c:if>
                     </div>
                 </li>
                 <li>

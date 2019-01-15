@@ -5,16 +5,19 @@ import org.springframework.stereotype.Service;
 import pl.coderslab.addins.MailSender;
 import pl.coderslab.model.Location;
 import pl.coderslab.model.Role;
+import pl.coderslab.model.UUID;
 import pl.coderslab.model.User;
 import pl.coderslab.repository.RoleRepository;
 import pl.coderslab.repository.UserRepository;
+import pl.coderslab.repository.UuidRepository;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @Transactional
