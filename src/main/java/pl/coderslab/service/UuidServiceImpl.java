@@ -25,6 +25,8 @@ public class UuidServiceImpl implements UuidService<pl.coderslab.model.UUID> {
         Date uuidDate = c.getTime();
         uuid.setRegExpiry(new Timestamp(uuidDate.getTime()));
         uuid.setPwdExpiry(new Timestamp(uuidDate.getTime()));
+        uuid.setPwdUUID(java.util.UUID.randomUUID());
+        uuid.setRegUUID(java.util.UUID.randomUUID());
         uuidRepository.save(uuid);
     }
 
@@ -36,6 +38,7 @@ public class UuidServiceImpl implements UuidService<pl.coderslab.model.UUID> {
         c.add(Calendar.HOUR,72);
         Date uuidDate = c.getTime();
         uuid.setPwdExpiry(new Timestamp(uuidDate.getTime()));
+        uuid.setPwdUUID(java.util.UUID.randomUUID());
         uuidRepository.save(uuid);
     }
 

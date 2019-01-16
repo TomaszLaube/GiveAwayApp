@@ -15,11 +15,11 @@ public class UUID {
 
     @NotNull
     @Type(type="org.hibernate.type.UUIDCharType")
-    private java.util.UUID regUUID = java.util.UUID.randomUUID();
+    private java.util.UUID regUUID;
 
     @NotNull
     @Type(type="org.hibernate.type.UUIDCharType")
-    private java.util.UUID pwdUUID = java.util.UUID.randomUUID();
+    private java.util.UUID pwdUUID;
 
     private Timestamp regExpiry;
 

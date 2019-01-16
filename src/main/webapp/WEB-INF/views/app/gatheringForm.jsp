@@ -75,7 +75,7 @@
                 </li>
                 <li>
                     <div class="col">
-                        <div class="text">Data odbioru:</div>
+                        <div class="text">Data zbiórki:</div>
                         <div class="title">
                             <form:input path="date" type="date" placeholder="Data" required="true"/>
                         </div>
@@ -84,7 +84,7 @@
                     <div class="col">
                         <div class="text">Opisz cel swojej zbiórki:</div>
                         <div class="title">
-                            <form:textarea path="description" placeholder="Instrukcje dla kuriera"
+                            <form:textarea path="description" placeholder="Cel i opis zbiórki"
                                            required="true"/>
                         </div>
                         <div class="error"><form:errors path="description"/></div>

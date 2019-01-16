@@ -26,18 +26,17 @@ CREATE TABLE `gatherings` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `active` bit(1) NOT NULL,
   `city` varchar(40) COLLATE utf8_polish_ci NOT NULL,
-  `created` datetime NOT NULL,
+  `created` datetime DEFAULT NULL,
   `date` date NOT NULL,
   `description` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `postal_code` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `street` varchar(100) COLLATE utf8_polish_ci NOT NULL,
-  `telephone` varchar(9) COLLATE utf8_polish_ci NOT NULL,
-  `time` time NOT NULL,
+  `telephone` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKj35oiru9lvlm07i0l7h6m8rle` (`user_id`),
   CONSTRAINT `FKj35oiru9lvlm07i0l7h6m8rle` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +45,7 @@ CREATE TABLE `gatherings` (
 
 LOCK TABLES `gatherings` WRITE;
 /*!40000 ALTER TABLE `gatherings` DISABLE KEYS */;
+INSERT INTO `gatherings` VALUES (1,_binary '','Chełm','2019-01-16 13:57:51','2019-01-24','Zbiórka zabawek i książek dla dzieci','22-100','Świerkowa 8','987654321',2),(2,_binary '','Chełm','2019-01-16 13:58:30','2019-01-25','Zbiórka ubrań dla bezdomnych','22-100','1 Pułku Szwoleżerów 10/2','987654321',2),(3,_binary '','Warszawa','2019-01-16 14:05:32','2019-01-31','Zbiórka ubrań i książek dla osób starszych','02-699','Kłobucka 15/3','123456789',3),(4,_binary '','Warszawa','2019-01-16 14:06:21','2019-01-26','Zbiórka różnorakich datków dla niepełnosprawnych','02-699','Kłobucka 15/3','123456789',3),(5,_binary '\0','Warszawa','2019-01-16 14:07:08','2019-01-15','Zbiórka ubrań dla bezdomnych','02-699','Kłobucka 15/3','123456789',3),(6,_binary '\0','Lublin','2019-01-16 14:10:23','2019-01-15','Zbiórka ubrań dla samotnych matek','82-345','Kołyskowa 3','456123789',4),(7,_binary '','Lublin','2019-01-16 14:11:04','2019-02-21','Zbiórka książek dla osób starszych','82-345','Kołyskowa 3','456123789',4);
 /*!40000 ALTER TABLE `gatherings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,6 +72,7 @@ CREATE TABLE `gatherings_goods` (
 
 LOCK TABLES `gatherings_goods` WRITE;
 /*!40000 ALTER TABLE `gatherings_goods` DISABLE KEYS */;
+INSERT INTO `gatherings_goods` VALUES (2,1),(3,1),(5,1),(6,1),(2,2),(3,2),(5,2),(6,2),(1,3),(1,4),(3,4),(7,4),(4,5);
 /*!40000 ALTER TABLE `gatherings_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,6 +99,7 @@ CREATE TABLE `gatherings_receivers` (
 
 LOCK TABLES `gatherings_receivers` WRITE;
 /*!40000 ALTER TABLE `gatherings_receivers` DISABLE KEYS */;
+INSERT INTO `gatherings_receivers` VALUES (1,1),(6,2),(2,3),(5,3),(4,4),(3,5),(7,5);
 /*!40000 ALTER TABLE `gatherings_receivers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -161,21 +163,22 @@ CREATE TABLE `offers` (
   `additional_instructions` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `bag_num` bigint(20) NOT NULL,
   `city` varchar(40) COLLATE utf8_polish_ci NOT NULL,
-  `created` datetime NOT NULL,
+  `created` datetime DEFAULT NULL,
   `date` date NOT NULL,
+  `opened` bit(1) NOT NULL,
   `postal_code` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `received` bit(1) NOT NULL,
   `sent` bit(1) NOT NULL,
   `street` varchar(100) COLLATE utf8_polish_ci NOT NULL,
   `telephone` varchar(9) COLLATE utf8_polish_ci NOT NULL,
-  `time` time NOT NULL,
-  `institution_id` bigint(20) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
+  `institution_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK584f4isbcq5fjbo9s1950mvsb` (`institution_id`),
   KEY `FK9yilcimbeupq2lyrqr1nlrjyb` (`user_id`),
   CONSTRAINT `FK584f4isbcq5fjbo9s1950mvsb` FOREIGN KEY (`institution_id`) REFERENCES `users` (`id`),
   CONSTRAINT `FK9yilcimbeupq2lyrqr1nlrjyb` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,6 +187,7 @@ CREATE TABLE `offers` (
 
 LOCK TABLES `offers` WRITE;
 /*!40000 ALTER TABLE `offers` DISABLE KEYS */;
+INSERT INTO `offers` VALUES (1,'5-te piętro',5,'Chełm','2019-01-16 13:59:26','2019-01-17',_binary '\0','22-100',_binary '\0',_binary '','1 Pułku Szwoleżerów 19/6','987654321',6,2),(2,'5-te piętro',6,'Chełm','2019-01-16 14:03:23','2019-01-24',_binary '\0','22-100',_binary '\0',_binary '\0','1 Pułku Szwoleżerów 19/8','991323609',8,2),(3,'2-gie piętro',15,'Warszawa','2019-01-16 14:08:03','2019-01-24',_binary '\0','02-699',_binary '\0',_binary '','Kłobucka 15/3','123456789',7,3),(4,'2-gie piętro',3,'Warszawa','2019-01-16 14:08:49','2019-01-29',_binary '\0','02-699',_binary '\0',_binary '\0','Kłobucka 15/3','123456789',7,3),(5,'Brak',1,'Lublin','2019-01-16 14:12:11','2019-02-01',_binary '\0','82-345',_binary '\0',_binary '\0','Kołyskowa 3','456123789',7,4),(6,'brak',4,'Lublin','2019-01-16 14:12:55','2019-02-15',_binary '\0','82-345',_binary '\0',_binary '','Kołyskowa 3','456123789',7,4);
 /*!40000 ALTER TABLE `offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -210,6 +214,7 @@ CREATE TABLE `offers_goods` (
 
 LOCK TABLES `offers_goods` WRITE;
 /*!40000 ALTER TABLE `offers_goods` DISABLE KEYS */;
+INSERT INTO `offers_goods` VALUES (2,1),(3,1),(4,1),(6,1),(2,2),(3,2),(4,2),(6,2),(1,3),(3,3),(1,4),(3,4),(5,4),(3,5);
 /*!40000 ALTER TABLE `offers_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,6 +241,7 @@ CREATE TABLE `offers_receivers` (
 
 LOCK TABLES `offers_receivers` WRITE;
 /*!40000 ALTER TABLE `offers_receivers` DISABLE KEYS */;
+INSERT INTO `offers_receivers` VALUES (1,1),(3,1),(4,1),(5,1),(3,2),(4,2),(2,3),(3,3),(3,4),(3,5),(6,5);
 /*!40000 ALTER TABLE `offers_receivers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +280,7 @@ CREATE TABLE `roles` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_polish_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,7 +289,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER');
+INSERT INTO `roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_USER'),(3,'ROLE_ORG');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -306,13 +312,10 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `validated` bit(1) NOT NULL,
   `location_id` bigint(20) DEFAULT NULL,
-  `uuid_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FKdk0xfnnthbj8afp1ira6sndte` (`location_id`),
-  KEY `FKinhjcpukup63uq8nr2cje39j4` (`uuid_id`),
-  CONSTRAINT `FKdk0xfnnthbj8afp1ira6sndte` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`),
-  CONSTRAINT `FKinhjcpukup63uq8nr2cje39j4` FOREIGN KEY (`uuid_id`) REFERENCES `uuid` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  CONSTRAINT `FKdk0xfnnthbj8afp1ira6sndte` FOREIGN KEY (`location_id`) REFERENCES `locations` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +324,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'N/A','admin@admin.pl',_binary '','Admin','Admin','N/A',_binary '\0','$2a$10$9h9LVV.7InxnzxuchaEy4eIUc8q.VPwgMKlIQnh0dCx3ywMRwLSIK',_binary '',NULL,NULL);
+INSERT INTO `users` VALUES (1,'N/A','admin@admin.pl',_binary '','Admin','Admin','N/A',_binary '\0','$2a$10$Sc4vebh72/3C5S62HjdtPOoRZPubhhts12F5VCmaIIL5W2inLdYu2',_binary '',NULL),(2,'N/A','user1@user.pl',_binary '','Jan','Kowalski','N/A',_binary '\0','$2a$10$mOF4DmcW9fsOwav1Dq0IUOgvHWUhgzxerJbz2Shkbg1YQVTwPxZxO',_binary '',NULL),(3,'N/A','user2@user.pl',_binary '','Jan','Brzechwa','N/A',_binary '\0','$2a$10$YuPSiwCmLfRDdQkyRmfdJeIegt/cijnrievvTcvfxmRoB5EKMeIX.',_binary '',NULL),(4,'N/A','user3@user.pl',_binary '','Jan','Mickiewicz','N/A',_binary '\0','$2a$10$IXr9e9wOAXI53py9QHthX.cPksp7XgqCqr0aYn2tw/la14IwwO/nm',_binary '',NULL),(5,'N/A','admin2@admin.pl',_binary '','Admin2','Admin','N/A',_binary '\0','$2a$10$ZudinW8TJ1/i1.v6j3xKauHlzugr2ojhgTLgFsbDA1AJWUbxm.sU6',_binary '',NULL),(6,'Kompleksowa pomoc dzieciom','org1@org.pl',_binary '','N/A','N/A','Organizacja 1',_binary '','$2a$10$5DazUlyjtnnaYNmd5GKDvucu2dgjPBeYTjKq3Amka4DXYSkp/jPm.',_binary '',617),(7,'Kompleksowa pomoc różnym potrzebującym','org2@org.pl',_binary '','N/A','N/A','Organizacja 2',_binary '','$2a$10$NZs99Fp0UqdqtGC8yqYpG.xyThVA9tobezdDLPJ6fRqqVtOyik9gW',_binary '',617),(8,'Kompleksowa pomoc bezdomnym i niepełnosprawnym','org3@org.pl',_binary '','N/A','N/A','Organizacja 3',_binary '','$2a$10$SZT3gqt8Ecoy5XUzylVO7OKE1ooI1oB7VQBkb1SEG0yk5eGpv6OXS',_binary '',617),(9,'Kompleksowa pomoc wszystkim potrzebującym','org4@org.pl',_binary '','N/A','N/A','Organizacja 4',_binary '','$2a$10$FFCDCb4n00bUCLIjRagOvOqyU41xovRn78fcItvYjZFagRFQ3.erK',_binary '',649),(10,'Kompleksowa pomoc wszystkim potrzebującym','org5@org.pl',_binary '','N/A','N/A','Organizacja 5',_binary '','$2a$10$vYCd77SNCNGsmcaoWxaEIO9g7MAU77YOv9.2hyeazQQ.Hs6VIoq6C',_binary '',271);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,6 +351,7 @@ CREATE TABLE `users_org_goods` (
 
 LOCK TABLES `users_org_goods` WRITE;
 /*!40000 ALTER TABLE `users_org_goods` DISABLE KEYS */;
+INSERT INTO `users_org_goods` VALUES (6,1),(7,1),(8,1),(9,1),(10,1),(6,2),(7,2),(8,2),(9,2),(10,2),(6,3),(7,3),(8,3),(9,3),(10,3),(6,4),(7,4),(8,4),(9,4),(10,4),(6,5),(7,5),(8,5),(9,5),(10,5);
 /*!40000 ALTER TABLE `users_org_goods` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -374,6 +378,7 @@ CREATE TABLE `users_org_receivers` (
 
 LOCK TABLES `users_org_receivers` WRITE;
 /*!40000 ALTER TABLE `users_org_receivers` DISABLE KEYS */;
+INSERT INTO `users_org_receivers` VALUES (6,1),(7,1),(9,1),(10,1),(7,2),(9,2),(10,2),(7,3),(8,3),(9,3),(10,3),(7,4),(8,4),(9,4),(10,4),(7,5),(9,5),(10,5);
 /*!40000 ALTER TABLE `users_org_receivers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -400,7 +405,7 @@ CREATE TABLE `users_roles` (
 
 LOCK TABLES `users_roles` WRITE;
 /*!40000 ALTER TABLE `users_roles` DISABLE KEYS */;
-INSERT INTO `users_roles` VALUES (1,1);
+INSERT INTO `users_roles` VALUES (1,1),(5,1),(2,2),(3,2),(4,2),(6,3),(7,3),(8,3),(9,3),(10,3);
 /*!40000 ALTER TABLE `users_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -417,8 +422,11 @@ CREATE TABLE `uuid` (
   `pwduuid` varchar(255) COLLATE utf8_polish_ci NOT NULL,
   `reg_expiry` datetime DEFAULT NULL,
   `reguuid` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+  `user_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK24if7rbnkd4vn4wkcyeld28jk` (`user_id`),
+  CONSTRAINT `FK24if7rbnkd4vn4wkcyeld28jk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -427,6 +435,7 @@ CREATE TABLE `uuid` (
 
 LOCK TABLES `uuid` WRITE;
 /*!40000 ALTER TABLE `uuid` DISABLE KEYS */;
+INSERT INTO `uuid` VALUES (1,'2019-01-19 13:50:34','77f77854-2d85-4cb0-b2a9-f0f2ef76dd85','2019-01-19 13:50:34','5ab759a2-bbfd-474d-bebb-c2df7e42c063',2),(2,'2019-01-19 13:50:58','6a78c4e7-8a08-4ad1-9835-c6f752776c1d','2019-01-19 13:50:58','44ddb830-14dc-4a78-9df4-e69ba90efb32',3),(3,'2019-01-19 13:51:22','69b62957-dacd-4b10-bab7-d7b30b5e748c','2019-01-19 13:51:22','a93332c9-f6c4-4add-ab91-ddd094e7b4d2',4),(4,'2019-01-19 13:52:38','b6bde8a9-6362-4d4f-b650-28a7c14eea7a','2019-01-19 13:52:38','01f35303-aa19-4978-a55d-f745eeed2245',5),(5,'2019-01-19 13:53:45','1940ac2c-d4fd-48bb-8b21-922608ad8d69','2019-01-19 13:53:45','6d907ee4-f49c-4b48-b9c9-af53f259aae4',6),(6,'2019-01-19 13:54:37','35f10321-1907-4ff7-b086-0668a34359df','2019-01-19 13:54:37','0e5093cd-99e5-4804-99e3-3b2e7d266241',7),(7,'2019-01-19 13:55:24','d01dac22-a83b-4b99-95a8-7125951df065','2019-01-19 13:55:24','d9cb8cac-bebc-4466-87b1-80a939abf8d8',8),(8,'2019-01-19 14:13:57','44c9c799-8bc6-4fbf-8758-7c816ad9d4b9','2019-01-19 14:13:57','a5eaf429-3f4e-4998-bb30-4d3f0caa3ba4',9),(9,'2019-01-19 14:14:39','c19fa603-3645-4c94-8501-e386fd8c8883','2019-01-19 14:14:39','1d91ede0-68b6-4caf-aa8f-776a288f5975',10);
 /*!40000 ALTER TABLE `uuid` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -439,4 +448,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-03 17:04:02
+-- Dump completed on 2019-01-16 14:15:45

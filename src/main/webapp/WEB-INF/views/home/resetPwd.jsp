@@ -4,21 +4,18 @@
 <jsp:include page="loginHeader.jsp"/>
 
 <section class="login-page">
-    <h2>Zaloguj się</h2>
-    <form method="post" action="/login">
-
+    <h2>Wpisz swój adres email:</h2>
+    <form method="post">
         <div class="form-group">
-            <input type="text" name="username" placeholder="Email"/>
+            <input type="text" name="email" placeholder="Email" required/>
         </div>
-
-        <div class="form-group">
-            <input type="password" name="password"placeholder="Hasło"/>
-        </div>
+        <c:if test="${userNotFound}">
+            <div class="notification">Podany adres email nie istnieje w naszej bazie danych.</div>
+        </c:if>
         <input type="hidden" name="${_csrf.parameterName}"
                value="${_csrf.token}" />
         <div class="form-group form-group--buttons">
-            <button class="btn" type="submit">Zaloguj</button>
-            <a href="/forgottenPassword" class="btn btn--highlighted">Nie pamiętasz hasła?</a>
+            <button class="btn" type="submit">Resetuj hasło</button>
         </div>
     </form>
 </section>

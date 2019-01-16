@@ -34,7 +34,7 @@
                     <c:if test="${not empty sentUserOffers}">
                         <div class="title">Odbiorca/Wysyłka</div>
                         <c:forEach items="${sentUserOffers}" var="sent">
-                            <div class="text">
+                            <div class="title">
                                     ${sent.institution.name}/${sent.date} <a href="/app/offerDetails/${sent.id}"
                                                                              class="btn btn--small">Szczegóły</a>
                             </div>

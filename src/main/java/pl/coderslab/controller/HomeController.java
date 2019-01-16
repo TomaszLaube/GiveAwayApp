@@ -10,6 +10,7 @@ import pl.coderslab.model.*;
 import pl.coderslab.service.*;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -299,4 +300,54 @@ public class HomeController {
         }
     }
 
+    @GetMapping("/forgottenPassword")
+    public String resetPwd(){
+        return "home/resetPwd";
+    }
+
+    @PostMapping("/forgottenPassword")
+    public String clearedPwd(@RequestParam String email, Model model){
+        User byEmail = (User)userService.findByEmail(email);
+        if(byEmail!=null){
+            pl.coderslab.model.UUID userUUID = (pl.coderslab.model.UUID)uuidService.findByUserId(byEmail.getId());
+            if(userUUID!=null){
+                uuidService.edit(userUUID);
+                //wysłanie maila
+                return "home/pwdResetConfirm";
+            } else {
+                return "redirect:/403";
+            }
+        } else {
+            model.addAttribute("userNotFound", true);
+            return "home/resetPwd";
+        }
+    }
+
+    @GetMapping("/newPwd/{pwdUuid}")
+    public String newPwd(@PathVariable UUID pwdUuid){
+        pl.coderslab.model.UUID userUUID = (pl.coderslab.model.UUID)uuidService.findByPwdUUID(pwdUuid);
+        if(userUUID!=null){
+            Date currentDate = new Date();
+            if(userUUID.getPwdExpiry().after(new Timestamp(currentDate.getTime()))){
+                return "home/newPwdForm";
+            } else {
+                return "home/pwdExpired";
+            }
+        } else {
+            return "redirect:/403";
+        }
+    }
+    @PostMapping("/newPwd/{pwdUuid}")
+    public String setNewPwd(@PathVariable UUID pwdUuid, @RequestParam String newPassword, @RequestParam String passwordCheck, Model model){
+        if(!newPassword.equals(passwordCheck)){
+            model.addAttribute("wrongPwdCheck",true);
+            return "home/newPwdForm";
+        } else{
+            pl.coderslab.model.UUID userUuid = (pl.coderslab.model.UUID)uuidService.findByPwdUUID(pwdUuid);
+            User user = (User)userService.findById(userUuid.getUser().getId());
+            user.setPassword(newPassword);
+            userService.changePassword(user);
+            return "home/newPwdConfirm";
+        }
+    }
 }

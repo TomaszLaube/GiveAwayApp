@@ -4,21 +4,22 @@
 <jsp:include page="loginHeader.jsp"/>
 
 <section class="login-page">
-    <h2>Zaloguj się</h2>
-    <form method="post" action="/login">
+    <h2>Wpisz swoje nowe hasło</h2>
+    <form method="post">
 
         <div class="form-group">
-            <input type="text" name="username" placeholder="Email"/>
+            <input type="password" name="newPassword" placeholder="Nowe hasło" required/>
         </div>
-
         <div class="form-group">
-            <input type="password" name="password"placeholder="Hasło"/>
+            <input type="password" name="passwordCheck" placeholder="Powtórz nowe hasło" required/>
         </div>
+        <c:if test="${wrongPwdCheck}">
+            <div class="notification">Powtórz poprawnie hasło</div>
+        </c:if>
         <input type="hidden" name="${_csrf.parameterName}"
                value="${_csrf.token}" />
         <div class="form-group form-group--buttons">
-            <button class="btn" type="submit">Zaloguj</button>
-            <a href="/forgottenPassword" class="btn btn--highlighted">Nie pamiętasz hasła?</a>
+            <button class="btn" type="submit">Ustaw hasło</button>
         </div>
     </form>
 </section>

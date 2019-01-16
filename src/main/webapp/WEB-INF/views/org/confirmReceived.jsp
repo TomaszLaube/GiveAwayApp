@@ -45,6 +45,7 @@
                 <div class="col">
                     <div class="title">
                         <form method="post">
+                            <input type="hidden" name="offerId2" value="${offer.id}"/>
                             <input type="hidden" name="${_csrf.parameterName}"
                                    value="${_csrf.token}"/>
                             <button type="submit" class="btn">Oznacz jako odebrane</button>
