@@ -49,7 +49,7 @@ public class User {
 
     private boolean enabled = true;
 
-    private boolean validated = true;
+    private boolean validated = false;
 
     private boolean org;
 

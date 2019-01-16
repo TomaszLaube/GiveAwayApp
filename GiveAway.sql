@@ -187,7 +187,7 @@ CREATE TABLE `offers` (
 
 LOCK TABLES `offers` WRITE;
 /*!40000 ALTER TABLE `offers` DISABLE KEYS */;
-INSERT INTO `offers` VALUES (1,'5-te piętro',5,'Chełm','2019-01-16 13:59:26','2019-01-17',_binary '\0','22-100',_binary '\0',_binary '','1 Pułku Szwoleżerów 19/6','987654321',6,2),(2,'5-te piętro',6,'Chełm','2019-01-16 14:03:23','2019-01-24',_binary '\0','22-100',_binary '\0',_binary '\0','1 Pułku Szwoleżerów 19/8','991323609',8,2),(3,'2-gie piętro',15,'Warszawa','2019-01-16 14:08:03','2019-01-24',_binary '\0','02-699',_binary '\0',_binary '','Kłobucka 15/3','123456789',7,3),(4,'2-gie piętro',3,'Warszawa','2019-01-16 14:08:49','2019-01-29',_binary '\0','02-699',_binary '\0',_binary '\0','Kłobucka 15/3','123456789',7,3),(5,'Brak',1,'Lublin','2019-01-16 14:12:11','2019-02-01',_binary '\0','82-345',_binary '\0',_binary '\0','Kołyskowa 3','456123789',7,4),(6,'brak',4,'Lublin','2019-01-16 14:12:55','2019-02-15',_binary '\0','82-345',_binary '\0',_binary '','Kołyskowa 3','456123789',7,4);
+INSERT INTO `offers` VALUES (1,'5-te piętro',5,'Chełm','2019-01-16 13:59:26','2019-01-17',_binary '','22-100',_binary '\0',_binary '','1 Pułku Szwoleżerów 19/6','987654321',6,2),(2,'5-te piętro',6,'Chełm','2019-01-16 14:03:23','2019-01-24',_binary '\0','22-100',_binary '\0',_binary '\0','1 Pułku Szwoleżerów 19/8','991323609',8,2),(3,'2-gie piętro',15,'Warszawa','2019-01-16 14:08:03','2019-01-24',_binary '','02-699',_binary '',_binary '','Kłobucka 15/3','123456789',7,3),(4,'2-gie piętro',3,'Warszawa','2019-01-16 14:08:49','2019-01-29',_binary '\0','02-699',_binary '\0',_binary '\0','Kłobucka 15/3','123456789',7,3),(5,'Brak',1,'Lublin','2019-01-16 14:12:11','2019-02-01',_binary '','82-345',_binary '\0',_binary '\0','Kołyskowa 3','456123789',7,4),(6,'brak',4,'Lublin','2019-01-16 14:12:55','2019-02-15',_binary '','82-345',_binary '\0',_binary '','Kołyskowa 3','456123789',7,4);
 /*!40000 ALTER TABLE `offers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -448,4 +448,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-16 14:15:45
+-- Dump completed on 2019-01-16 15:23:56

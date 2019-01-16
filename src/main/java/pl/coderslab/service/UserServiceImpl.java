@@ -44,13 +44,6 @@ public class UserServiceImpl implements UserService<User> {
         user.setDescription("N/A");
         user.setOrg(false);
         userRepository.save(user);
-        /*try{
-            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
-        }catch(AddressException e){
-            e.printStackTrace();
-        }catch(MessagingException e){
-            e.printStackTrace();
-        }*/
     }
 
     @Override
@@ -76,13 +69,7 @@ public class UserServiceImpl implements UserService<User> {
         user.setLastName("N/A");
         user.setOrg(true);
         userRepository.save(user);
-        /*try{
-            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
-        }catch(AddressException e){
-            e.printStackTrace();
-        }catch(MessagingException e){
-            e.printStackTrace();
-        }*/
+
     }
 
     @Override
@@ -91,7 +78,7 @@ public class UserServiceImpl implements UserService<User> {
     }
 
     @Override
-    public void edit(User user) { //do edycji danych
+    public void edit(User user) {
         User temp = userRepository.findUserById(user.getId());
         user.setRoles(temp.getRoles());
         user.setGatherings(temp.getGatherings());
@@ -152,13 +139,6 @@ public class UserServiceImpl implements UserService<User> {
         user.setOrg(true);
         user.setValidated(true);
         userRepository.save(user);
-        /*try{
-            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
-        }catch(AddressException e){
-            e.printStackTrace();
-        }catch(MessagingException e){
-            e.printStackTrace();
-        }*/
     }
 
 
@@ -173,12 +153,5 @@ public class UserServiceImpl implements UserService<User> {
         user.setOrg(false);
         user.setValidated(true);
         userRepository.save(user);
-        /*try{
-            MailSender.activateAccount(user.getEmail(),user.getFirstName(),user.getLastName(),user.getUserUUID());
-        }catch(AddressException e){
-            e.printStackTrace();
-        }catch(MessagingException e){
-            e.printStackTrace();
-        }*/
     }
 }
